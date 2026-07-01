@@ -1,0 +1,89 @@
+{
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "Sync Interval",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n2",
+      "name": "Fetch MySQL mock API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {
+        "url": "https://api.mysql-mock.com/rows",
+        "method": "GET"
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Map Airtable schema",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        500,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n4",
+      "name": "Airtable Upsert API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        700,
+        200
+      ],
+      "parameters": {
+        "url": "https://api.airtable.com/v0/app123/records",
+        "method": "PATCH"
+      }
+    }
+  ],
+  "connections": {
+    "Sync Interval": {
+      "main": [
+        [
+          {
+            "node": "Fetch MySQL mock API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch MySQL mock API": {
+      "main": [
+        [
+          {
+            "node": "Map Airtable schema",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map Airtable schema": {
+      "main": [
+        [
+          {
+            "node": "Airtable Upsert API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+flowchart TD
+    node_1_t1("Trigger Deploy (Trigger)")
+    node_2_n2["Slack Approval Block"]
+    node_3_n3["Deploy Respond OK"]
+
+    node_1_t1 --> node_2_n2
+    node_2_n2 --> node_3_n3
+
+    style node_1_t1 fill:#e0e7ff,stroke:#6366f1,stroke-width:2px,color:#1e1b4b
+    style node_2_n2 fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b
+    style node_3_n3 fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b

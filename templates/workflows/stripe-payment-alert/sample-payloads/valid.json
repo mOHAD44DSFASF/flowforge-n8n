@@ -1,0 +1,20 @@
+{
+  "id": "evt_1NzABCDEFG12345",
+  "object": "event",
+  "api_version": "2023-10-16",
+  "created": 1699000000,
+  "type": "charge.succeeded",
+  "data": {
+    "object": {
+      "id": "ch_1NzABC",
+      "amount": 2999,
+      "currency": "usd",
+      "billing_details": {
+        "email": "customer@example.com",
+        "name": "Stripe Customer"
+      },
+      "paid": true,
+      "status": "succeeded"
+    }
+  }
+}

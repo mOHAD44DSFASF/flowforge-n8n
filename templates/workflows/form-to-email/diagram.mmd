@@ -1,0 +1,15 @@
+flowchart TD
+    node_1_t1("Form Submission Webhook (Trigger)")
+    node_2_n2{"Is Email filled?"}
+    node_3_n3["Gmail send form details"]
+    node_4_n4["Form respond OK"]
+
+    node_1_t1 --> node_2_n2
+    node_2_n2 -->|true| node_3_n3
+    node_2_n2 -->|false| node_4_n4
+    node_3_n3 --> node_4_n4
+
+    style node_1_t1 fill:#e0e7ff,stroke:#6366f1,stroke-width:2px,color:#1e1b4b
+    style node_2_n2 fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#451a03
+    style node_3_n3 fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b
+    style node_4_n4 fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b

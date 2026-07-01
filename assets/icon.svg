@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="50%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#d946ef" />
+    </linearGradient>
+    <linearGradient id="sparkGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#ef4444" />
+    </linearGradient>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#09090b" rx="24" />
+
+  <g transform="translate(10, 10)">
+    <!-- Connected Wires -->
+    <path d="M 40 90 Q 90 40 140 90" fill="none" stroke="url(#iconGrad)" stroke-width="5" stroke-dasharray="8, 4" />
+    
+    <!-- Node 1 -->
+    <circle cx="40" cy="90" r="14" fill="#09090b" stroke="url(#iconGrad)" stroke-width="4" />
+    <circle cx="40" cy="90" r="5" fill="#3b82f6" />
+
+    <!-- Node 2 -->
+    <circle cx="140" cy="90" r="14" fill="#09090b" stroke="url(#iconGrad)" stroke-width="4" />
+    <path d="M 140 80 L 143 87 L 150 87 L 145 91 L 147 98 L 140 94 L 133 98 L 135 91 L 130 87 L 137 87 Z" fill="url(#sparkGrad)" />
+  </g>
+</svg>

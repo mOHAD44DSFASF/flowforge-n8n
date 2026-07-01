@@ -1,0 +1,141 @@
+{
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "Dedupe Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {
+        "path": "dedup-records",
+        "httpMethod": "POST"
+      }
+    },
+    {
+      "id": "n2",
+      "name": "Read Google Sheet rows",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {
+        "url": "https://sheets.googleapis.com/v4/spreadsheets/123/values",
+        "method": "GET"
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Check Email Duplicate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        500,
+        200
+      ],
+      "parameters": {
+        "jsCode": "// Dedupe logic\nreturn items;"
+      }
+    },
+    {
+      "id": "n4",
+      "name": "Is Duplicate?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        700,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n5",
+      "name": "Append unique row",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        900,
+        150
+      ],
+      "parameters": {
+        "url": "https://sheets.googleapis.com/v4/spreadsheets/123/values",
+        "method": "POST"
+      }
+    },
+    {
+      "id": "n6",
+      "name": "Dedupe response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        200
+      ],
+      "parameters": {
+        "responseCode": 200
+      }
+    }
+  ],
+  "connections": {
+    "Dedupe Webhook": {
+      "main": [
+        [
+          {
+            "node": "Read Google Sheet rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Google Sheet rows": {
+      "main": [
+        [
+          {
+            "node": "Check Email Duplicate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Email Duplicate": {
+      "main": [
+        [
+          {
+            "node": "Is Duplicate?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Duplicate?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Append unique row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append unique row": {
+      "main": [
+        [
+          {
+            "node": "Dedupe response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

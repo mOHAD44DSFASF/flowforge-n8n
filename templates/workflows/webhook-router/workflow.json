@@ -1,0 +1,123 @@
+{
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "Catch All Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {
+        "path": "router",
+        "httpMethod": "POST"
+      }
+    },
+    {
+      "id": "n2",
+      "name": "Switch route",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {
+        "rules": [
+          {
+            "value": "={{ $json.body.event }}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Route A handler",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        500,
+        100
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n4",
+      "name": "Route B handler",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        500,
+        300
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n5",
+      "name": "Router respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        700,
+        200
+      ],
+      "parameters": {
+        "responseCode": 200
+      }
+    }
+  ],
+  "connections": {
+    "Catch All Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch route",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch route": {
+      "main": [
+        [
+          {
+            "node": "Route A handler",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Route B handler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route A handler": {
+      "main": [
+        [
+          {
+            "node": "Router respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route B handler": {
+      "main": [
+        [
+          {
+            "node": "Router respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

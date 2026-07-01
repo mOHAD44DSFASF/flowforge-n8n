@@ -1,0 +1,14 @@
+{
+  "hooks": [
+    {
+      "event": "PostFileWrite",
+      "pattern": "**/workflows/**/*.json",
+      "command": "flowforge validate \"$FILE_PATH\" && flowforge lint \"$FILE_PATH\""
+    },
+    {
+      "event": "PostFileEdit",
+      "pattern": "**/workflows/**/*.json",
+      "command": "flowforge validate \"$FILE_PATH\" && flowforge lint \"$FILE_PATH\""
+    }
+  ]
+}

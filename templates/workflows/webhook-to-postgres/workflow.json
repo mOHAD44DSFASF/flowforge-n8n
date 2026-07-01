@@ -1,0 +1,91 @@
+{
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "DB Webhook trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {
+        "path": "postgres-insert",
+        "httpMethod": "POST"
+      }
+    },
+    {
+      "id": "n2",
+      "name": "Filter data payload",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n3",
+      "name": "HTTP Postgres insert mock",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        500,
+        200
+      ],
+      "parameters": {
+        "url": "https://api.postgres-mock.com/rows",
+        "method": "POST"
+      }
+    },
+    {
+      "id": "n4",
+      "name": "DB Insert respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        700,
+        200
+      ],
+      "parameters": {
+        "responseCode": 200
+      }
+    }
+  ],
+  "connections": {
+    "DB Webhook trigger": {
+      "main": [
+        [
+          {
+            "node": "Filter data payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter data payload": {
+      "main": [
+        [
+          {
+            "node": "HTTP Postgres insert mock",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Postgres insert mock": {
+      "main": [
+        [
+          {
+            "node": "DB Insert respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

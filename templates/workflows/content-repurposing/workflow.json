@@ -1,0 +1,94 @@
+{
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "Raw Content hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {
+        "path": "repurpose",
+        "httpMethod": "POST"
+      }
+    },
+    {
+      "id": "n2",
+      "name": "AI Repurpose Content",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {
+        "url": "https://api.openai.com/v1/chat/completions",
+        "method": "POST"
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Split Outputs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        500,
+        200
+      ],
+      "parameters": {
+        "jsCode": "// split tasks\nreturn items;"
+      }
+    },
+    {
+      "id": "n4",
+      "name": "Airtable Queue Posts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        700,
+        200
+      ],
+      "parameters": {
+        "url": "https://api.airtable.com/v0/app123/posts",
+        "method": "POST"
+      }
+    }
+  ],
+  "connections": {
+    "Raw Content hook": {
+      "main": [
+        [
+          {
+            "node": "AI Repurpose Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Repurpose Content": {
+      "main": [
+        [
+          {
+            "node": "Split Outputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Outputs": {
+      "main": [
+        [
+          {
+            "node": "Airtable Queue Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

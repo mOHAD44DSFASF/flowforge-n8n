@@ -1,0 +1,21 @@
+flowchart TD
+    node_1_t1("AI Lead Webhook (Trigger)")
+    node_2_n2["GPT Lead Score Check"]
+    node_3_n3{"Is Score > 7?"}
+    node_4_n4["Sales Slack Alert"]
+    node_5_n5["Low Priority Archive"]
+    node_6_n6["AI Respond"]
+
+    node_1_t1 --> node_2_n2
+    node_2_n2 --> node_3_n3
+    node_3_n3 -->|true| node_4_n4
+    node_3_n3 -->|false| node_5_n5
+    node_4_n4 --> node_6_n6
+    node_5_n5 --> node_6_n6
+
+    style node_1_t1 fill:#e0e7ff,stroke:#6366f1,stroke-width:2px,color:#1e1b4b
+    style node_2_n2 fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b
+    style node_3_n3 fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#451a03
+    style node_4_n4 fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b
+    style node_5_n5 fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b
+    style node_6_n6 fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b

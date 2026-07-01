@@ -1,0 +1,18 @@
+name: Plugin Installation Help
+description: Request support for loading or executing the plugin in Claude Code.
+labels: [plugin-support]
+body:
+  - type: textarea
+    id: environment
+    attributes:
+      label: Claude Code Version & Environment
+      placeholder: Run 'claude --version' and describe your terminal context.
+    validations:
+      required: true
+  - type: textarea
+    id: errors-logged
+    attributes:
+      label: Error logs from Claude Code
+      placeholder: Paste any logs from your '/plugin Errors' panel here.
+    validations:
+      required: true

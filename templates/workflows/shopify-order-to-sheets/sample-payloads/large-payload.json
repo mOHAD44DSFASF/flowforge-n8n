@@ -1,0 +1,74 @@
+{
+  "id": 123456789,
+  "email": "buyer@shopify.com",
+  "total_price": "150.00",
+  "line_items": [
+    {
+      "id": 987654321,
+      "title": "Product 1",
+      "quantity": 1,
+      "price": "15.00"
+    },
+    {
+      "id": 987654322,
+      "title": "Product 2",
+      "quantity": 1,
+      "price": "15.00"
+    },
+    {
+      "id": 987654323,
+      "title": "Product 3",
+      "quantity": 1,
+      "price": "15.00"
+    },
+    {
+      "id": 987654324,
+      "title": "Product 4",
+      "quantity": 1,
+      "price": "15.00"
+    },
+    {
+      "id": 987654325,
+      "title": "Product 5",
+      "quantity": 1,
+      "price": "15.00"
+    },
+    {
+      "id": 987654326,
+      "title": "Product 6",
+      "quantity": 1,
+      "price": "15.00"
+    },
+    {
+      "id": 987654327,
+      "title": "Product 7",
+      "quantity": 1,
+      "price": "15.00"
+    },
+    {
+      "id": 987654328,
+      "title": "Product 8",
+      "quantity": 1,
+      "price": "15.00"
+    },
+    {
+      "id": 987654329,
+      "title": "Product 9",
+      "quantity": 1,
+      "price": "15.00"
+    },
+    {
+      "id": 987654330,
+      "title": "Product 10",
+      "quantity": 1,
+      "price": "15.00"
+    }
+  ],
+  "shipping_address": {
+    "address1": "456 Webhook Lane",
+    "city": "Ottawa",
+    "province": "Ontario",
+    "zip": "K1P 1A1",
+    "country": "Canada"
+  }
+}

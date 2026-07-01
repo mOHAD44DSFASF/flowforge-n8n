@@ -1,0 +1,91 @@
+{
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "Daily Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n2",
+      "name": "Main DB backup task",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {
+        "url": "https://api.backup.local/run",
+        "method": "POST",
+        "onError": "continue"
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Did Task Fail?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        500,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n4",
+      "name": "Slack Alert Failure",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        700,
+        150
+      ],
+      "parameters": {
+        "url": "https://hooks.slack.com/errors",
+        "method": "POST"
+      }
+    }
+  ],
+  "connections": {
+    "Daily Trigger": {
+      "main": [
+        [
+          {
+            "node": "Main DB backup task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Main DB backup task": {
+      "main": [
+        [
+          {
+            "node": "Did Task Fail?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Did Task Fail?": {
+      "main": [
+        [
+          {
+            "node": "Slack Alert Failure",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "Invoice Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {
+        "path": "invoice-receiver",
+        "httpMethod": "POST"
+      }
+    },
+    {
+      "id": "n2",
+      "name": "Parse Invoice OCR",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {
+        "url": "https://api.ocr-parser.example/extract",
+        "method": "POST"
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Validate totals",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        500,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n4",
+      "name": "Insert DB Record",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        700,
+        150
+      ],
+      "parameters": {
+        "url": "https://api.postgres-mock.com/invoice",
+        "method": "POST"
+      }
+    },
+    {
+      "id": "n5",
+      "name": "Invoice respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        900,
+        200
+      ],
+      "parameters": {
+        "responseCode": 200
+      }
+    }
+  ],
+  "connections": {
+    "Invoice Webhook": {
+      "main": [
+        [
+          {
+            "node": "Parse Invoice OCR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Invoice OCR": {
+      "main": [
+        [
+          {
+            "node": "Validate totals",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate totals": {
+      "main": [
+        [
+          {
+            "node": "Insert DB Record",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Insert DB Record": {
+      "main": [
+        [
+          {
+            "node": "Invoice respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "Poll RSS Interval",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n2",
+      "name": "Fetch Feed HTTP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {
+        "url": "https://my-blog.com/feed.xml",
+        "method": "GET"
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Filter new items",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        500,
+        200
+      ],
+      "parameters": {
+        "jsCode": "// Filter items\nreturn items.filter(i => i.isNew);"
+      }
+    },
+    {
+      "id": "n4",
+      "name": "Queue Social Post",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        700,
+        200
+      ],
+      "parameters": {
+        "url": "https://api.buffer.com/v1/updates/create",
+        "method": "POST"
+      }
+    }
+  ],
+  "connections": {
+    "Poll RSS Interval": {
+      "main": [
+        [
+          {
+            "node": "Fetch Feed HTTP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Feed HTTP": {
+      "main": [
+        [
+          {
+            "node": "Filter new items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter new items": {
+      "main": [
+        [
+          {
+            "node": "Queue Social Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

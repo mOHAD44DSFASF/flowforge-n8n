@@ -1,0 +1,12 @@
+{
+  "id": "evt_1NzABCDEFG12345",
+  "type": "charge.succeeded",
+  "data": {
+    "object": {
+      "amount": 2999,
+      "billing_details": {
+        "email": "invalid-email-stripe"
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Jane Doe",
+  "email": "jane.doe@example.com",
+  "company": "Acme Corp",
+  "customField_xyz": "extra-data",
+  "userIpAddress": "192.168.1.50",
+  "meta": {
+    "clientVersion": "v4.2.1",
+    "sessionCookie": "abc123xyz"
+  }
+}

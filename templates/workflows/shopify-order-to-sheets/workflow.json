@@ -1,0 +1,126 @@
+{
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "Shopify Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {
+        "path": "shopify-orders",
+        "httpMethod": "POST"
+      }
+    },
+    {
+      "id": "n2",
+      "name": "Extract Order properties",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "price",
+              "value": "={{ $json.body.total_price }}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Append Sheet Row",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        500,
+        200
+      ],
+      "parameters": {
+        "url": "https://sheets.googleapis.com/v4/spreadsheets/123/values",
+        "method": "POST"
+      }
+    },
+    {
+      "id": "n4",
+      "name": "Email alert",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 1,
+      "position": [
+        700,
+        200
+      ],
+      "parameters": {
+        "to": "admin@my-shop.com",
+        "subject": "New Order Received",
+        "onError": "continue"
+      }
+    },
+    {
+      "id": "n5",
+      "name": "Shopify OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        900,
+        200
+      ],
+      "parameters": {
+        "responseCode": 200
+      }
+    }
+  ],
+  "connections": {
+    "Shopify Webhook": {
+      "main": [
+        [
+          {
+            "node": "Extract Order properties",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Order properties": {
+      "main": [
+        [
+          {
+            "node": "Append Sheet Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Sheet Row": {
+      "main": [
+        [
+          {
+            "node": "Email alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email alert": {
+      "main": [
+        [
+          {
+            "node": "Shopify OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

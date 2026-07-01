@@ -1,0 +1,29 @@
+name: Bug Report
+description: Create a report to help us improve FlowForge n8n.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please verify that the bug is reproducible with local mock files and doesn't contain private credentials data.
+  - type: textarea
+    id: describe
+    attributes:
+      label: Describe the bug
+      placeholder: Describe what happened.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      placeholder: Detailed steps to reproduce the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      placeholder: What you expected to see.
+    validations:
+      required: true

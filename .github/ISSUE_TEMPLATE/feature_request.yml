@@ -1,0 +1,25 @@
+name: Feature Request
+description: Propose a new feature for FlowForge n8n.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: describe
+    attributes:
+      label: Is your feature request related to a problem?
+      placeholder: Describe the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the solution you'd like
+      placeholder: A clear description of what you want to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Describe alternatives you've considered
+      placeholder: Any alternative solutions you've considered.
+    validations:
+      required: false

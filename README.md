@@ -1,0 +1,231 @@
+# FlowForge n8n
+
+<p align="center">
+  <img src="assets/banner.svg" alt="FlowForge n8n banner" width="100%">
+</p>
+
+<p align="center">
+  <!-- Truthful Badges (No npm badge until published) -->
+  <a href="https://github.com/<YOUR_GITHUB_USERNAME>/flowforge-n8n/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/<YOUR_GITHUB_USERNAME>/flowforge-n8n/ci.yml?branch=main&style=flat-square" alt="CI status"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/<YOUR_GITHUB_USERNAME>/flowforge-n8n.svg?style=flat-square" alt="MIT License"></a>
+  <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D%2020-blue.svg?style=flat-square" alt="Node.js 20+"></a>
+  <a href="https://typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-%3E%3D%205-blue.svg?style=flat-square" alt="TypeScript"></a>
+  <a href="https://n8n.io"><img src="https://img.shields.io/badge/n8n-workflow_scaffolds-orange.svg?style=flat-square" alt="n8n compatible"></a>
+  <a href="https://code.claude.com"><img src="https://img.shields.io/badge/Claude%20Code-Plugin-purple.svg?style=flat-square" alt="Claude Code Plugin"></a>
+</p>
+
+**FlowForge n8n** is a local-first command-line interface (CLI) and Claude Code plugin for creating, validating, linting, sanitizing, documenting, scoring, diagramming, testing, and scaffolding n8n workflow JSON.
+
+> **Note on Repository URLs:** Replace `<YOUR_GITHUB_USERNAME>` inside this README with your actual GitHub username after publishing.
+
+---
+
+## 🚀 The Flow
+```text
+Prompt → workflow scaffold → validate → sanitize → payloads → test scripts → diagram → docs
+```
+
+---
+
+## 🔍 What is FlowForge n8n?
+
+FlowForge n8n helps automation engineers and Claude Code users create review-ready n8n workflow scaffolds, validate workflow JSON structure, remove credentials secrets, generate test payloads, generate webhook test scripts, render connection diagrams, compile descriptions documentation, score workflow quality metrics, and scaffold custom n8n community nodes.
+
+---
+
+## 🛑 What it is NOT
+*   **Not a replacement for n8n:** FlowForge does not run or host n8n integrations. You edit and run workflows inside your active n8n instance.
+*   **Not guaranteed production automation:** Generated workflows represent review-ready scaffolds. You must test and configure integrations before running them in production.
+*   **Not a real n8n runtime runner:** In `v0.1.0`, FlowForge reviews structures and parses schemas offline. It does not invoke live third-party APIs.
+*   **Not a hosted SaaS:** FlowForge operates entirely locally on your machine.
+*   **Not an API key collector:** FlowForge does not request, log, or transmit your credentials.
+
+---
+
+## 🛠️ Features Summary
+
+| Component | Description |
+| :--- | :--- |
+| **Workflow Scaffold Generator** | Creates connection blocks and JSON schemas from prompt parameters. |
+| **Template Generator** | Installs 20 preconfigured automation workflow directories. |
+| **Validator** | Asserts Zod schema compliance, catches duplicates, and checks connection tracks. |
+| **Linter** | Audits retry configuration checks and naming guidelines. |
+| **Sanitizer** | Recursively scrubs GitHub, Stripe, and Slack keys. |
+| **Payload Generator** | Generates mock payloads (valid, invalid, boundary cases) for simulation. |
+| **Webhook Test Generator** | Compiles curl execution scripts (`test-webhook.sh`) for active webhook triggers. |
+| **Mermaid Diagram Generator** | Translates workflow JSON layout files to Mermaid diagrams. |
+| **Docs Generator** | Documents node specifications and credentials requirements. |
+| **Explain Command** | Traces logic tracks in plain language. |
+| **Quality Score** | Grades workflows (0-100) on reliability, security, and maintainability. |
+| **Diff Command** | Lists added/removed nodes and edited parameters between files. |
+| **Custom Node Generator** | Scaffolds node directories conforming to `n8n-nodes-starter` specs. |
+| **Claude Code Plugin** | Provides slash commands, skills SOP manuals, system agents, and save hooks. |
+
+---
+
+## ⚡️ 60-Second CLI Quickstart
+
+Since FlowForge n8n is in local distribution, clone and compile it inside your workspace:
+
+```bash
+# 1. Clone and compile
+git clone https://github.com/<YOUR_GITHUB_USERNAME>/flowforge-n8n.git
+cd flowforge-n8n
+pnpm install
+pnpm build
+pnpm flowforge --help
+
+# 2. Generate review-ready workflow scaffold
+pnpm flowforge new "Receive a lead from a webhook, validate it, call a CRM API, notify Slack, and respond with JSON" --out examples/generated/lead
+
+# 3. Validate JSON structure and connections
+pnpm flowforge validate examples/generated/lead/lead.json
+
+# 4. Redact private credentials
+pnpm flowforge sanitize examples/generated/lead/lead.json
+
+# 5. Generate mock simulation datasets
+pnpm flowforge payload lead-form --out examples/generated/lead/payloads
+
+# 6. Build webhook curl trigger script
+pnpm flowforge test-webhook examples/generated/lead/lead.json --out examples/generated/lead
+
+# 7. Render flowchart diagram
+pnpm flowforge diagram examples/generated/lead/lead.json --out examples/generated/lead
+
+# 8. Compile documentation markdown
+pnpm flowforge docs examples/generated/lead/lead.json --out examples/generated/lead/docs
+
+# 9. Audit quality scorecard metrics
+pnpm flowforge score examples/generated/lead/lead.json
+```
+
+---
+
+## 🤖 Use FlowForge inside Claude Code
+
+FlowForge includes a Claude Code plugin consisting of custom slash commands, skills instructions, subagent systems, and file check hooks.
+
+### Local Loading
+Launch Claude Code pointing to your local repository directory:
+```bash
+claude --plugin-dir .
+```
+
+### Available Slash Commands
+Inside Claude Code, run:
+*   `/flowforge-n8n:flow-new`: Generate workflow JSON scaffolds.
+*   `/flowforge-n8n:flow-validate`: Validate workflow structural paths.
+*   `/flowforge-n8n:flow-lint`: Audit design configurations.
+*   `/flowforge-n8n:flow-sanitize`: Scrub credentials.
+*   `/flowforge-n8n:flow-payload`: Output simulation payloads.
+*   `/flowforge-n8n:flow-test-webhook`: Compile curl scripts.
+*   `/flowforge-n8n:flow-diagram`: Generate connection flowcharts.
+*   `/flowforge-n8n:flow-docs`: Build specifications markdown.
+*   `/flowforge-n8n:flow-explain`: Explain logic tracks.
+*   `/flowforge-n8n:flow-score`: Score quality metrics.
+*   `/flowforge-n8n:flow-diff`: Diff workflow revisions.
+*   `/flowforge-n8n:node-new`: Scaffold custom node code.
+
+### Example Prompts
+*   `/flowforge-n8n:flow-new Create a workflow that receives leads from a webhook, validates email, stores them in Google Sheets, notifies Slack, and responds with JSON.`
+*   `/flowforge-n8n:flow-validate workflows/lead.workflow.json`
+*   `/flowforge-n8n:flow-sanitize workflows/lead.workflow.json`
+*   `/flowforge-n8n:flow-diagram workflows/lead.workflow.json`
+*   `/flowforge-n8n:flow-docs workflows/lead.workflow.json`
+*   `/flowforge-n8n:node-new Create a custom n8n node scaffold for a CRM API using API key authentication.`
+
+---
+
+## 🛒 Claude Code Marketplace Installation
+
+After publishing your repository to GitHub, you can add it to your Claude Code marketplace and install it:
+
+```text
+/plugin marketplace add <YOUR_GITHUB_USERNAME>/flowforge-n8n
+/plugin install flowforge-n8n@flowforge-n8n
+/reload-plugins
+```
+
+*Note: If the plugin commands do not appear, update Claude Code and run `/reload-plugins`. Ensure that the repository is public and contains `.claude-plugin/marketplace.json`.*
+
+---
+
+## CLI Command Reference
+
+| Command | Purpose | Example |
+| :--- | :--- | :--- |
+| `new` | Scaffold workflow JSON from keywords or template copy. | `flowforge new --template lead-to-crm` |
+| `validate` | Check schema format, duplicate names, and connection tracks. | `flowforge validate workflows/lead.json` |
+| `lint` | Audit retry settings, orphan nodes, and naming. | `flowforge lint workflows/lead.json` |
+| `sanitize` | Redact Slack/Stripe keys and Authorization headers. | `flowforge sanitize workflows/lead.json` |
+| `payload` | Output 6 simulation payload variants. | `flowforge payload lead-form` |
+| `test-webhook` | Generate mock webhook execution scripts. | `flowforge test-webhook workflows/lead.json` |
+| `diagram` | Render layout graph as Mermaid flowchart files. | `flowforge diagram workflows/lead.json` |
+| `docs` | Compile specs and credentials checklist. | `flowforge docs workflows/lead.json` |
+| `explain` | Translate connection logic to plain English. | `flowforge explain workflows/lead.json` |
+| `score` | Calculate structural metrics score (0-100). | `flowforge score workflows/lead.json` |
+| `diff` | Analyze differences between two versions. | `flowforge diff old.json new.json` |
+| `node-new` | Scaffold custom n8n community node directories. | `flowforge node-new CRMNode` |
+
+---
+
+## 📦 Included Workflow Templates
+
+FlowForge ships with 20 preconfigured templates. Run `flowforge new --template <name>` to clone:
+
+*   `lead-to-crm`: Webhook lead receiver and CRM integration.
+*   `stripe-payment-alert`: Slack notifications for Stripe payment events.
+*   `shopify-order-to-sheets`: Append Shopify orders to Google Sheets logs.
+*   `webhook-router`: Route requests by event parameter.
+*   `ai-email-triage`: AI triage classifier for incoming emails.
+*   `support-ticket-classifier`: Categorize ticket sentiment.
+*   `crm-enrichment`: Clearbit API data enrichment updates.
+*   `invoice-processing`: Parse and route invoice metadata.
+*   `rss-to-social`: Buffer feed updates to social channels.
+*   `slack-approval-gate`: Trigger Slack approval response buttons.
+*   `airtable-sync`: Schedule select DB records to Airtable.
+*   `error-alerting`: Fallback catcher alert notify triggers.
+*   `scheduled-report`: Stripe balance queries email reporter.
+*   `form-to-email`: Form webhook email notification dispatch.
+*   `google-sheets-dedup`: Check sheets rows for duplicates before inserting.
+*   `ai-lead-qualification`: AI-based qualification evaluator alerts.
+*   `webhook-to-postgres`: Webhook payload insertion directly to database.
+*   `telegram-notifier`: Dispatch bot chat notifications.
+*   `content-repurposing`: Split text to marketing drafts layouts.
+*   `human-in-the-loop-ai`: AI classifications approved via Slack buttons.
+
+> **Note on Assets:** Webhook-based templates include `test-webhook.sh`. Non-webhook templates include docs, diagrams, credentials checklist, and sample data where applicable.
+
+---
+
+## 🔒 Security Policy
+
+*   **No credential collection:** FlowForge never asks for your real API keys or platform credentials.
+*   **Placeholder setups:** Generated scaffolds write placeholder values (`**REDACTED_SECRET**` or `**CREDENTIAL_PLACEHOLDER**`) to parameters.
+*   **Sanitization checker:** `sanitize` scans and redacts high-entropy keys locally before repository check-ins.
+*   **Verification:** Always manually review workflow JSON layouts before staging. Never commit live keys or `.env` credential files.
+
+---
+
+## ⚠️ Limitations
+*   `v0.1.0` operates entirely offline and does not spin up a live n8n server runtime.
+*   Workflows created are review-ready scaffolds; API connection authentication must be configured inside your n8n editor UI.
+*   `node-new` scaffolds custom TS and package files. You must implement downstream API fetch calls yourself.
+
+---
+
+## 🗺️ Roadmap
+*   **v0.2.0:** Local Docker test runner integration, compatibility checks, and stronger schema validations.
+*   **v0.3.0:** OpenAPI imports, curl-to-workflow compilers, expression fixers, and log debugger.
+*   **v1.0.0:** Stable execution compatibility checks and automated custom node code builders.
+
+---
+
+## 🤝 Contributing
+Contributions are welcome! Please view our [Contributing Guidelines](CONTRIBUTING.md) to get started on open issues.
+
+---
+
+## 📄 License
+FlowForge n8n is licensed under the [MIT License](LICENSE).

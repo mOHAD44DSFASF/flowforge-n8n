@@ -1,0 +1,20 @@
+flowchart TD
+    node_1_t1("Dedupe Webhook (Trigger)")
+    node_2_n2["Read Google Sheet rows"]
+    node_3_n3["Check Email Duplicate"]
+    node_4_n4{"Is Duplicate?"}
+    node_5_n5["Append unique row"]
+    node_6_n6["Dedupe response"]
+
+    node_1_t1 --> node_2_n2
+    node_2_n2 --> node_3_n3
+    node_3_n3 --> node_4_n4
+    node_4_n4 -->|false| node_5_n5
+    node_5_n5 --> node_6_n6
+
+    style node_1_t1 fill:#e0e7ff,stroke:#6366f1,stroke-width:2px,color:#1e1b4b
+    style node_2_n2 fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b
+    style node_3_n3 fill:#f3f4f6,stroke:#4b5563,stroke-width:2px,color:#111827
+    style node_4_n4 fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#451a03
+    style node_5_n5 fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b
+    style node_6_n6 fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b

@@ -1,0 +1,145 @@
+{
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "AI Lead Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {
+        "path": "qualify-lead",
+        "httpMethod": "POST"
+      }
+    },
+    {
+      "id": "n2",
+      "name": "GPT Lead Score Check",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {
+        "url": "https://api.openai.com/v1/chat/completions",
+        "method": "POST"
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Is Score > 7?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        500,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n4",
+      "name": "Sales Slack Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        700,
+        150
+      ],
+      "parameters": {
+        "url": "https://hooks.slack.com/sales-alerts",
+        "method": "POST"
+      }
+    },
+    {
+      "id": "n5",
+      "name": "Low Priority Archive",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        700,
+        300
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n6",
+      "name": "AI Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        900,
+        200
+      ],
+      "parameters": {
+        "responseCode": 200
+      }
+    }
+  ],
+  "connections": {
+    "AI Lead Webhook": {
+      "main": [
+        [
+          {
+            "node": "GPT Lead Score Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT Lead Score Check": {
+      "main": [
+        [
+          {
+            "node": "Is Score > 7?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Score > 7?": {
+      "main": [
+        [
+          {
+            "node": "Sales Slack Alert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Low Priority Archive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sales Slack Alert": {
+      "main": [
+        [
+          {
+            "node": "AI Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Low Priority Archive": {
+      "main": [
+        [
+          {
+            "node": "AI Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

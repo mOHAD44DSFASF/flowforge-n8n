@@ -1,0 +1,6 @@
+{
+  "id": "item-100",
+  "status": "active",
+  "debug": true,
+  "foo": "bar"
+}

@@ -1,0 +1,91 @@
+{
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "Monday Morning Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n2",
+      "name": "Fetch Stripe Metrics",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {
+        "url": "https://api.stripe.com/v1/balance",
+        "method": "GET"
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Compile HTML report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        500,
+        200
+      ],
+      "parameters": {
+        "jsCode": "return [{ html: \"<h1>Weekly Stripe sales: \" + items[0].amount + \"</h1>\" }];"
+      }
+    },
+    {
+      "id": "n4",
+      "name": "Send report email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 1,
+      "position": [
+        700,
+        200
+      ],
+      "parameters": {
+        "to": "report-recipient@example.com",
+        "subject": "Stripe Weekly Report"
+      }
+    }
+  ],
+  "connections": {
+    "Monday Morning Trigger": {
+      "main": [
+        [
+          {
+            "node": "Fetch Stripe Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Stripe Metrics": {
+      "main": [
+        [
+          {
+            "node": "Compile HTML report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compile HTML report": {
+      "main": [
+        [
+          {
+            "node": "Send report email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

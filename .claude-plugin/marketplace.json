@@ -1,0 +1,14 @@
+{
+  "name": "flowforge-n8n",
+  "owner": "FlowForge n8n Maintainers",
+  "description": "Local-first Claude Code plugin for n8n workflow scaffolds and static analysis",
+  "plugins": [
+    {
+      "name": "flowforge-n8n",
+      "source": ".",
+      "description": "Generate, validate, sanitize, document, score, diagram, and scaffold n8n workflow JSON from Claude Code",
+      "version": "0.1.0",
+      "author": "FlowForge n8n Maintainers"
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "New Ticket Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {
+        "path": "new-ticket",
+        "httpMethod": "POST"
+      }
+    },
+    {
+      "id": "n2",
+      "name": "AI Sentiment Check",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {
+        "url": "https://api.openai.com/v1/completions",
+        "method": "POST"
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Is High Priority?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        500,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n4",
+      "name": "Slack Escalation",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        700,
+        100
+      ],
+      "parameters": {
+        "url": "https://hooks.slack.com/escalations",
+        "method": "POST"
+      }
+    },
+    {
+      "id": "n5",
+      "name": "Standard Log Sheet",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        700,
+        300
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n6",
+      "name": "Ticket classified OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        900,
+        200
+      ],
+      "parameters": {
+        "responseCode": 200
+      }
+    }
+  ],
+  "connections": {
+    "New Ticket Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Sentiment Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Sentiment Check": {
+      "main": [
+        [
+          {
+            "node": "Is High Priority?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is High Priority?": {
+      "main": [
+        [
+          {
+            "node": "Slack Escalation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Standard Log Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack Escalation": {
+      "main": [
+        [
+          {
+            "node": "Ticket classified OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Standard Log Sheet": {
+      "main": [
+        [
+          {
+            "node": "Ticket classified OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

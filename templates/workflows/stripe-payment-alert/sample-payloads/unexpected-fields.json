@@ -1,0 +1,6 @@
+{
+  "id": "evt_1NzABCDEFG12345",
+  "type": "charge.succeeded",
+  "extra_field_stripe_debug": true,
+  "referrer": "unknown"
+}

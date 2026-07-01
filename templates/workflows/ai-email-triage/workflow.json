@@ -1,0 +1,93 @@
+{
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "Gmail trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n2",
+      "name": "AI Triage LLM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {
+        "url": "https://api.openai.com/v1/chat/completions",
+        "method": "POST",
+        "onError": "continue"
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Filter Spam",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        500,
+        200
+      ],
+      "parameters": {
+        "conditions": {}
+      }
+    },
+    {
+      "id": "n4",
+      "name": "Slack Alert Support",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        700,
+        150
+      ],
+      "parameters": {
+        "url": "https://hooks.slack.com/support",
+        "method": "POST"
+      }
+    }
+  ],
+  "connections": {
+    "Gmail trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Triage LLM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Triage LLM": {
+      "main": [
+        [
+          {
+            "node": "Filter Spam",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Spam": {
+      "main": [
+        [
+          {
+            "node": "Slack Alert Support",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  }
+}

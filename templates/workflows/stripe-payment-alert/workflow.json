@@ -1,0 +1,109 @@
+{
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "Stripe Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {
+        "path": "stripe-events",
+        "httpMethod": "POST"
+      }
+    },
+    {
+      "id": "n2",
+      "name": "Check is charge",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "name": "type",
+              "operator": "equal",
+              "value": "charge.succeeded"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Slack Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        500,
+        150
+      ],
+      "parameters": {
+        "url": "https://example.invalid/slack-webhook-placeholder",
+        "method": "POST"
+      }
+    },
+    {
+      "id": "n4",
+      "name": "Stripe response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        700,
+        200
+      ],
+      "parameters": {
+        "responseCode": 200,
+        "responseBody": "{\"received\": true}"
+      }
+    }
+  ],
+  "connections": {
+    "Stripe Webhook": {
+      "main": [
+        [
+          {
+            "node": "Check is charge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check is charge": {
+      "main": [
+        [
+          {
+            "node": "Slack Alert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stripe response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack Alert": {
+      "main": [
+        [
+          {
+            "node": "Stripe response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

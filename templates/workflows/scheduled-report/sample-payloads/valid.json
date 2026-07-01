@@ -1,0 +1,8 @@
+{
+  "id": "item-100",
+  "status": "active",
+  "data": {
+    "message": "Hello FlowForge",
+    "value": 42
+  }
+}

@@ -1,0 +1,14 @@
+flowchart TD
+    node_1_t1("Monday Morning Trigger (Trigger)")
+    node_2_n2["Fetch Stripe Metrics"]
+    node_3_n3["Compile HTML report"]
+    node_4_n4["Send report email"]
+
+    node_1_t1 --> node_2_n2
+    node_2_n2 --> node_3_n3
+    node_3_n3 --> node_4_n4
+
+    style node_1_t1 fill:#e0e7ff,stroke:#6366f1,stroke-width:2px,color:#1e1b4b
+    style node_2_n2 fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b
+    style node_3_n3 fill:#f3f4f6,stroke:#4b5563,stroke-width:2px,color:#111827
+    style node_4_n4 fill:#d1fae5,stroke:#059669,stroke-width:2px,color:#064e3b

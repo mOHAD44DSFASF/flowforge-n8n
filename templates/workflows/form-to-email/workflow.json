@@ -1,0 +1,97 @@
+{
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "Form Submission Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {
+        "path": "contact-form",
+        "httpMethod": "POST"
+      }
+    },
+    {
+      "id": "n2",
+      "name": "Is Email filled?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n3",
+      "name": "Gmail send form details",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 1,
+      "position": [
+        500,
+        150
+      ],
+      "parameters": {
+        "to": "sales@example.com"
+      }
+    },
+    {
+      "id": "n4",
+      "name": "Form respond OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        700,
+        200
+      ],
+      "parameters": {
+        "responseCode": 200
+      }
+    }
+  ],
+  "connections": {
+    "Form Submission Webhook": {
+      "main": [
+        [
+          {
+            "node": "Is Email filled?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Email filled?": {
+      "main": [
+        [
+          {
+            "node": "Gmail send form details",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Form respond OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail send form details": {
+      "main": [
+        [
+          {
+            "node": "Form respond OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

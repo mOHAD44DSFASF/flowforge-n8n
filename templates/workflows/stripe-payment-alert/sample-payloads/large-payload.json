@@ -1,0 +1,27 @@
+{
+  "id": "evt_1NzABCDEFG12345",
+  "object": "event",
+  "type": "charge.succeeded",
+  "data": {
+    "object": {
+      "id": "ch_1NzABC",
+      "amount": 2999,
+      "billing_details": {
+        "email": "customer@example.com",
+        "name": "Stripe Customer",
+        "address": {
+          "city": "San Francisco",
+          "country": "US",
+          "line1": "123 Market St",
+          "postal_code": "94105"
+        }
+      },
+      "refunds": {
+        "object": "list",
+        "data": [],
+        "has_more": false,
+        "total_count": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "nodes": [
+    {
+      "id": "t1",
+      "name": "Raw action hook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ],
+      "parameters": {
+        "path": "human-approval-gate",
+        "httpMethod": "POST"
+      }
+    },
+    {
+      "id": "n2",
+      "name": "AI Decision score",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        300,
+        200
+      ],
+      "parameters": {
+        "url": "https://api.openai.com/v1/chat/completions",
+        "method": "POST"
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Is approved?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        500,
+        200
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n4",
+      "name": "Execute approved action",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        700,
+        150
+      ],
+      "parameters": {
+        "url": "https://api.mycrm.com/execute",
+        "method": "POST"
+      }
+    },
+    {
+      "id": "n5",
+      "name": "Post alert to slack",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        700,
+        300
+      ],
+      "parameters": {
+        "url": "https://hooks.slack.com/errors",
+        "method": "POST"
+      }
+    }
+  ],
+  "connections": {
+    "Raw action hook": {
+      "main": [
+        [
+          {
+            "node": "AI Decision score",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Decision score": {
+      "main": [
+        [
+          {
+            "node": "Is approved?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is approved?": {
+      "main": [
+        [
+          {
+            "node": "Execute approved action",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Post alert to slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

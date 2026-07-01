@@ -1,0 +1,18 @@
+name: Workflow Template Request
+description: Request a new pre-designed workflow template in FlowForge.
+labels: [template-request]
+body:
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Describe the use case
+      placeholder: What business automation need does this template address?
+    validations:
+      required: true
+  - type: textarea
+    id: nodes-required
+    attributes:
+      label: Target n8n Nodes
+      placeholder: List the target API nodes (e.g. Gmail, HubSpot, OpenAI).
+    validations:
+      required: true

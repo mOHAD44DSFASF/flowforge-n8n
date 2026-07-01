@@ -1,0 +1,12 @@
+{
+  "name": "flowforge-n8n",
+  "version": "0.1.0",
+  "description": "AI engineering toolkit for generating, validating, testing, documenting, and debugging n8n workflows.",
+  "author": "FlowForge contributors",
+  "repository": "https://github.com/<YOUR_GITHUB_USERNAME>/flowforge-n8n",
+  "license": "MIT",
+  "commands": "../commands",
+  "skills": "../skills",
+  "agents": "../agents",
+  "hooks": "../hooks/hooks.json"
+}
