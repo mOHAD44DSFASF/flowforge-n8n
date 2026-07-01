@@ -6,17 +6,15 @@
 
 <p align="center">
   <!-- Truthful Badges (No npm badge until published) -->
-  <a href="https://github.com/<YOUR_GITHUB_USERNAME>/flowforge-n8n/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/<YOUR_GITHUB_USERNAME>/flowforge-n8n/ci.yml?branch=main&style=flat-square" alt="CI status"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/<YOUR_GITHUB_USERNAME>/flowforge-n8n.svg?style=flat-square" alt="MIT License"></a>
+  <a href="https://github.com/mOHAD44DSFASF/flowforge-n8n/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/mOHAD44DSFASF/flowforge-n8n/ci.yml?branch=main&style=flat-square" alt="CI status"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/mOHAD44DSFASF/flowforge-n8n.svg?style=flat-square" alt="MIT License"></a>
   <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D%2020-blue.svg?style=flat-square" alt="Node.js 20+"></a>
   <a href="https://typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-%3E%3D%205-blue.svg?style=flat-square" alt="TypeScript"></a>
-  <a href="https://n8n.io"><img src="https://img.shields.io/badge/n8n-workflow_scaffolds-orange.svg?style=flat-square" alt="n8n compatible"></a>
+  <a href="https://n8n.io"><img src="https://img.shields.io/badge/n8n-workflow_scaffolds-orange.svg?style=flat-square" alt="n8n workflow scaffolds"></a>
   <a href="https://code.claude.com"><img src="https://img.shields.io/badge/Claude%20Code-Plugin-purple.svg?style=flat-square" alt="Claude Code Plugin"></a>
 </p>
 
 **FlowForge n8n** is a local-first command-line interface (CLI) and Claude Code plugin for creating, validating, linting, sanitizing, documenting, scoring, diagramming, testing, and scaffolding n8n workflow JSON.
-
-> **Note on Repository URLs:** Replace `<YOUR_GITHUB_USERNAME>` inside this README with your actual GitHub username after publishing.
 
 ---
 
@@ -69,7 +67,7 @@ Since FlowForge n8n is in local distribution, clone and compile it inside your w
 
 ```bash
 # 1. Clone and compile
-git clone https://github.com/<YOUR_GITHUB_USERNAME>/flowforge-n8n.git
+git clone https://github.com/mOHAD44DSFASF/flowforge-n8n.git
 cd flowforge-n8n
 pnpm install
 pnpm build
@@ -142,7 +140,7 @@ Inside Claude Code, run:
 After publishing your repository to GitHub, you can add it to your Claude Code marketplace and install it:
 
 ```text
-/plugin marketplace add <YOUR_GITHUB_USERNAME>/flowforge-n8n
+/plugin marketplace add mOHAD44DSFASF/flowforge-n8n
 /plugin install flowforge-n8n@flowforge-n8n
 /reload-plugins
 ```

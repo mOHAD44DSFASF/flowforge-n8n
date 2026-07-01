@@ -36,7 +36,7 @@ FlowForge n8n v0.1.0 is the initial public release of our local-first static ana
 *   `/flowforge-n8n:flow-new`
 *   `/flowforge-n8n:flow-validate`
 *   `/flowforge-n8n:flow-lint`
-*   `/flowforge-n8n-flow-sanitize`
+*   `/flowforge-n8n:flow-sanitize`
 *   `/flowforge-n8n:flow-payload`
 *   `/flowforge-n8n:flow-test-webhook`
 *   `/flowforge-n8n:flow-diagram`

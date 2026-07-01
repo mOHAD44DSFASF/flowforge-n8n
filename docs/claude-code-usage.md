@@ -32,7 +32,7 @@ To load the plugin locally from this repository directory:
 After publishing the repository to your public GitHub profile, you can register and install the plugin from your marketplace layout:
 1.  Add your repository to your Claude Code marketplace:
     ```text
-    /plugin marketplace add <YOUR_GITHUB_USERNAME>/flowforge-n8n
+    /plugin marketplace add mOHAD44DSFASF/flowforge-n8n
     ```
 2.  Install the plugin:
     ```text
@@ -42,8 +42,6 @@ After publishing the repository to your public GitHub profile, you can register 
     ```text
     /reload-plugins
     ```
-
-*Note: Replace `<YOUR_GITHUB_USERNAME>` with your real GitHub username after publishing.*
 
 ---
 
