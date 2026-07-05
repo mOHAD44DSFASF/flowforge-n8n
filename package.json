@@ -1,6 +1,6 @@
 {
   "name": "@flowforge-n8n/cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "The AI engineering toolkit for generating, validating, testing, documenting, and debugging n8n workflows.",
   "main": "dist/index.js",
@@ -16,6 +16,8 @@
   },
   "files": [
     "dist",
+    "schemas",
+    "scripts",
     "templates",
     ".claude-plugin",
     "commands",
@@ -28,6 +30,7 @@
     "dev": "tsx src/cli.ts",
     "build": "tsup",
     "templates:build": "tsx scripts/build-templates.ts",
+    "update:catalog": "tsx scripts/update-catalog.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint \"src/**/*.ts\" \"tests/**/*.ts\"",
@@ -47,6 +50,7 @@
   "author": "FlowForge contributors",
   "license": "MIT",
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "commander": "^12.1.0",
     "fast-glob": "^3.3.3",
     "zod": "^3.23.8"

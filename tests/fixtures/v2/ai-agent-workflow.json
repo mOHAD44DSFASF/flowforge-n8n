@@ -1,0 +1,63 @@
+{
+  "name": "AI Agent Fixture",
+  "nodes": [
+    {
+      "id": "webhook-1",
+      "name": "Question Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "parameters": {
+        "path": "ask",
+        "httpMethod": "POST"
+      }
+    },
+    {
+      "id": "agent-1",
+      "name": "Classify Request",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1,
+      "position": [240, 0],
+      "parameters": {
+        "prompt": "Classify support priority from {{$json.body.message}}"
+      }
+    },
+    {
+      "id": "respond-1",
+      "name": "Return Priority",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [480, 0],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{$json}}"
+      }
+    }
+  ],
+  "connections": {
+    "Question Webhook": {
+      "main": [
+        [
+          {
+            "node": "Classify Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify Request": {
+      "main": [
+        [
+          {
+            "node": "Return Priority",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {}
+}

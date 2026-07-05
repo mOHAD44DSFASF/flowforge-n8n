@@ -1,7 +1,12 @@
 import { parseWorkflowFile } from '../core/workflowParser.js';
 import { diffWorkflows } from '../core/workflowDiff.js';
+import { renderSemanticDiffMarkdown, semanticDiffWorkflows } from '../core/semanticDiff.js';
 
-export function executeDiff(oldPath: string, newPath: string) {
+export function executeDiff(
+  oldPath: string,
+  newPath: string,
+  options: { json?: boolean; markdown?: boolean } = {}
+) {
   const oldResult = parseWorkflowFile(oldPath);
   const newResult = parseWorkflowFile(newPath);
 
@@ -12,6 +17,18 @@ export function executeDiff(oldPath: string, newPath: string) {
   if (!newResult.success) {
     console.error(`\x1b[31m[ERROR] Error parsing new workflow file:\x1b[0m ${newResult.error}`);
     process.exit(1);
+  }
+
+  if (options.json) {
+    const report = semanticDiffWorkflows(oldResult.workflow!, newResult.workflow!);
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (options.markdown) {
+    const report = semanticDiffWorkflows(oldResult.workflow!, newResult.workflow!);
+    console.log(renderSemanticDiffMarkdown(report));
+    process.exit(0);
   }
 
   const report = diffWorkflows(oldResult.workflow!, newResult.workflow!);

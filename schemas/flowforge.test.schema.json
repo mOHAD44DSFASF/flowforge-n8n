@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://flowforge-n8n.local/schemas/flowforge.test.schema.json",
+  "title": "FlowForge regression test file",
+  "type": "object",
+  "required": ["workflow", "cases"],
+  "additionalProperties": false,
+  "properties": {
+    "workflow": {
+      "description": "Workflow JSON object or path relative to this test file.",
+      "oneOf": [{ "type": "string" }, { "type": "object" }]
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "trigger": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "node": { "type": "string" },
+              "payload": true
+            }
+          },
+          "mocks": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "output": true,
+                "error": { "type": "string" }
+              }
+            }
+          },
+          "expect": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "output": true,
+              "nodesExecuted": { "type": "array", "items": { "type": "string" } },
+              "notExecuted": { "type": "array", "items": { "type": "string" } },
+              "branch": { "type": "string" },
+              "noSideEffects": { "type": "boolean" }
+            }
+          },
+          "snapshot": { "type": "boolean", "default": false }
+        }
+      }
+    }
+  }
+}

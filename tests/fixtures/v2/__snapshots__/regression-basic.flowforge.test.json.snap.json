@@ -1,0 +1,6 @@
+{
+  "formats-lead-payload": {
+    "email": "jane@example.com",
+    "status": "qualified"
+  }
+}

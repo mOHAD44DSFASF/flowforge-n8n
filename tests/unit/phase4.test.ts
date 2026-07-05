@@ -56,7 +56,7 @@ test('payload generation outputs valid file variants', () => {
 
   const generated = generatePayloads('lead-form', tmpDir);
   expect(generated.length).toBe(6);
-  
+
   const expectedFiles = [
     'valid.json',
     'missing-required-field.json',
@@ -65,7 +65,7 @@ test('payload generation outputs valid file variants', () => {
     'unexpected-fields.json',
     'large-payload.json'
   ];
-  
+
   expectedFiles.forEach((file) => {
     const fullPath = path.join(tmpDir, file);
     expect(fs.existsSync(fullPath)).toBe(true);
@@ -114,7 +114,7 @@ test('workflow scorer evaluations', () => {
   // HTTP integration has no retry/error configurations (reliability -5)
   // Total score should be around 75/100 or less
   expect(report.score.total).toBeLessThan(100);
-  expect(report.recommendations.some(r => r.includes('Respond to Webhook'))).toBe(true);
+  expect(report.recommendations.some((r) => r.includes('Respond to Webhook'))).toBe(true);
 });
 
 test('workflow diff identification', () => {

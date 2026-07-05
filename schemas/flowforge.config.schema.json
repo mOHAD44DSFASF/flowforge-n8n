@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://flowforge-n8n.local/schemas/flowforge.config.schema.json",
+  "title": "FlowForge config",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "offline": { "type": "boolean", "default": false },
+    "rules": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "enabled": { "type": "boolean" },
+          "severity": { "$ref": "#/$defs/severity" }
+        }
+      },
+      "default": {}
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "failOn": { "$ref": "#/$defs/severity", "default": "error" },
+        "semantic": { "type": "boolean", "default": true }
+      }
+    },
+    "lint": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "failOn": { "$ref": "#/$defs/severity", "default": "error" }
+      }
+    },
+    "testing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reporter": { "enum": ["tty", "json", "junit"], "default": "tty" },
+        "bail": { "type": "boolean", "default": false },
+        "updateSnapshots": { "type": "boolean", "default": false }
+      }
+    },
+    "catalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sourceN8nVersion": { "type": "string" },
+        "warnOnVersionSkew": { "type": "boolean", "default": true }
+      }
+    },
+    "live": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "baseUrl": { "type": "string", "format": "uri" },
+        "apiKeyEnv": { "type": "string", "default": "N8N_API_KEY" }
+      }
+    }
+  },
+  "$defs": {
+    "severity": { "enum": ["info", "warning", "error"] }
+  }
+}

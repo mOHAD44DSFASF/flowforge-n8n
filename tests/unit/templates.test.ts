@@ -1,5 +1,9 @@
 import { expect, test } from 'vitest';
-import { getTemplateNames, writeTemplateToDir, scaffoldFromDescription } from '../../src/core/templates.js';
+import {
+  getTemplateNames,
+  writeTemplateToDir,
+  scaffoldFromDescription
+} from '../../src/core/templates.js';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -11,10 +15,12 @@ test('template names listing', () => {
 });
 
 test('keyword-based scaffold generation', () => {
-  const workflow = scaffoldFromDescription('Create a webhook trigger, format it, update sheets, notify slack and respond');
+  const workflow = scaffoldFromDescription(
+    'Create a webhook trigger, format it, update sheets, notify slack and respond'
+  );
   expect(workflow.nodes.length).toBeGreaterThan(3);
-  
-  const types = workflow.nodes.map(n => n.type);
+
+  const types = workflow.nodes.map((n) => n.type);
   expect(types).toContain('n8n-nodes-base.webhook');
   expect(types).toContain('n8n-nodes-base.set');
   expect(types).toContain('n8n-nodes-base.httpRequest');

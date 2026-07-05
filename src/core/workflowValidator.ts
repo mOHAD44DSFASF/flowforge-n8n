@@ -1,4 +1,5 @@
 import { N8nWorkflow, WorkflowNode } from './workflowSchema.js';
+import { Finding } from './findings.js';
 
 export interface ValidationError {
   severity: 'error' | 'warning';
@@ -11,11 +12,24 @@ export interface ValidationReport {
   isValid: boolean;
   errors: ValidationError[];
   warnings: ValidationError[];
+  findings: Finding[];
+}
+
+function validationErrorToFinding(error: ValidationError, code: string): Finding {
+  return {
+    code,
+    severity: error.severity,
+    category: 'schema',
+    message: error.message,
+    nodeId: error.nodeId,
+    nodeName: error.nodeName
+  };
 }
 
 export function validateWorkflow(workflow: N8nWorkflow): ValidationReport {
   const errors: ValidationError[] = [];
   const warnings: ValidationError[] = [];
+  const findings: Finding[] = [];
 
   const nodes = workflow.nodes || [];
   const connections = workflow.connections || {};
@@ -32,6 +46,17 @@ export function validateWorkflow(workflow: N8nWorkflow): ValidationReport {
         nodeId: node.id,
         nodeName: node.name
       });
+      findings.push(
+        validationErrorToFinding(
+          {
+            severity: 'error',
+            message: `Duplicate node ID found: "${node.id}"`,
+            nodeId: node.id,
+            nodeName: node.name
+          },
+          'SCHEMA-DUPLICATE-NODE-ID'
+        )
+      );
     }
     nodeIds.add(node.id);
 
@@ -42,6 +67,17 @@ export function validateWorkflow(workflow: N8nWorkflow): ValidationReport {
         nodeId: node.id,
         nodeName: node.name
       });
+      findings.push(
+        validationErrorToFinding(
+          {
+            severity: 'error',
+            message: `Duplicate node name found: "${node.name}"`,
+            nodeId: node.id,
+            nodeName: node.name
+          },
+          'SCHEMA-DUPLICATE-NODE-NAME'
+        )
+      );
     }
     nodeNames.add(node.name);
   }
@@ -58,6 +94,15 @@ export function validateWorkflow(workflow: N8nWorkflow): ValidationReport {
         severity: 'error',
         message: `Connection references non-existent source node: "${sourceName}"`
       });
+      findings.push(
+        validationErrorToFinding(
+          {
+            severity: 'error',
+            message: `Connection references non-existent source node: "${sourceName}"`
+          },
+          'SCHEMA-MISSING-CONNECTION-SOURCE'
+        )
+      );
       continue;
     }
 
@@ -66,7 +111,7 @@ export function validateWorkflow(workflow: N8nWorkflow): ValidationReport {
         if (!Array.isArray(branch)) continue;
         for (const conn of branch) {
           nodesWithOutgoing.add(sourceName);
-          
+
           // Check if target node exists
           if (!nodeNames.has(conn.node)) {
             errors.push({
@@ -74,6 +119,16 @@ export function validateWorkflow(workflow: N8nWorkflow): ValidationReport {
               message: `Node "${sourceName}" connects to non-existent target node: "${conn.node}"`,
               nodeName: sourceName
             });
+            findings.push(
+              validationErrorToFinding(
+                {
+                  severity: 'error',
+                  message: `Node "${sourceName}" connects to non-existent target node: "${conn.node}"`,
+                  nodeName: sourceName
+                },
+                'SCHEMA-MISSING-CONNECTION-TARGET'
+              )
+            );
           } else {
             nodesWithIncoming.add(conn.node);
           }
@@ -84,8 +139,8 @@ export function validateWorkflow(workflow: N8nWorkflow): ValidationReport {
 
   // 3. Disconnected / Orphan nodes checking
   for (const node of nodes) {
-    const isTriggerOrManual = 
-      node.type === 'n8n-nodes-base.webhook' || 
+    const isTriggerOrManual =
+      node.type === 'n8n-nodes-base.webhook' ||
       node.type === 'n8n-nodes-base.manualTrigger' ||
       node.type === 'n8n-nodes-base.scheduleTrigger';
 
@@ -101,6 +156,17 @@ export function validateWorkflow(workflow: N8nWorkflow): ValidationReport {
           nodeId: node.id,
           nodeName: node.name
         });
+        findings.push(
+          validationErrorToFinding(
+            {
+              severity: 'warning',
+              message: `Sticky note or NoOp node "${node.name}" is disconnected.`,
+              nodeId: node.id,
+              nodeName: node.name
+            },
+            'SCHEMA-DISCONNECTED-NOTE'
+          )
+        );
       } else {
         warnings.push({
           severity: 'warning',
@@ -108,6 +174,17 @@ export function validateWorkflow(workflow: N8nWorkflow): ValidationReport {
           nodeId: node.id,
           nodeName: node.name
         });
+        findings.push(
+          validationErrorToFinding(
+            {
+              severity: 'warning',
+              message: `Node "${node.name}" is completely disconnected.`,
+              nodeId: node.id,
+              nodeName: node.name
+            },
+            'SCHEMA-DISCONNECTED-NODE'
+          )
+        );
       }
     }
   }
@@ -133,6 +210,17 @@ export function validateWorkflow(workflow: N8nWorkflow): ValidationReport {
           nodeId: node.id,
           nodeName: node.name
         });
+        findings.push(
+          validationErrorToFinding(
+            {
+              severity: 'error',
+              message: `Webhook node "${node.name}" is missing a trigger path.`,
+              nodeId: node.id,
+              nodeName: node.name
+            },
+            'SCHEMA-WEBHOOK-MISSING-PATH'
+          )
+        );
       }
       const method = node.parameters?.httpMethod;
       if (!method) {
@@ -142,6 +230,17 @@ export function validateWorkflow(workflow: N8nWorkflow): ValidationReport {
           nodeId: node.id,
           nodeName: node.name
         });
+        findings.push(
+          validationErrorToFinding(
+            {
+              severity: 'error',
+              message: `Webhook node "${node.name}" is missing an HTTP method.`,
+              nodeId: node.id,
+              nodeName: node.name
+            },
+            'SCHEMA-WEBHOOK-MISSING-METHOD'
+          )
+        );
       }
     }
 
@@ -155,6 +254,17 @@ export function validateWorkflow(workflow: N8nWorkflow): ValidationReport {
           nodeId: node.id,
           nodeName: node.name
         });
+        findings.push(
+          validationErrorToFinding(
+            {
+              severity: 'error',
+              message: `HTTP Request node "${node.name}" is missing target URL.`,
+              nodeId: node.id,
+              nodeName: node.name
+            },
+            'SCHEMA-HTTP-MISSING-URL'
+          )
+        );
       }
     }
 
@@ -168,6 +278,20 @@ export function validateWorkflow(workflow: N8nWorkflow): ValidationReport {
           nodeId: node.id,
           nodeName: node.name
         });
+        findings.push({
+          code: 'SEC-HARDCODED-SECRET',
+          severity: 'warning',
+          category: 'security',
+          message: `Node "${node.name}" contains an obvious hardcoded API key or token pattern.`,
+          nodeId: node.id,
+          nodeName: node.name,
+          fix: {
+            kind: 'set-param',
+            path: `/nodes/${node.name}/credentials`,
+            value: '**CREDENTIAL_PLACEHOLDER**',
+            rationale: 'Move hardcoded secret material into n8n credentials.'
+          }
+        });
         break; // Trigger warning once per node
       }
     }
@@ -176,6 +300,7 @@ export function validateWorkflow(workflow: N8nWorkflow): ValidationReport {
   return {
     isValid: errors.length === 0,
     errors,
-    warnings
+    warnings,
+    findings
   };
 }

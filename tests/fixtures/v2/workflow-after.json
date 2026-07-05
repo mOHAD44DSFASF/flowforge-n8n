@@ -1,0 +1,68 @@
+{
+  "name": "Review After Fixture",
+  "nodes": [
+    {
+      "id": "manual-1",
+      "name": "Manual Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "parameters": {}
+    },
+    {
+      "id": "set-1",
+      "name": "Prepare Payload",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [220, 0],
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "status",
+              "value": "qualified"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "http-1",
+      "name": "Notify CRM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [440, 0],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.example.test/leads",
+        "retryOnFail": true
+      }
+    }
+  ],
+  "connections": {
+    "Manual Start": {
+      "main": [
+        [
+          {
+            "node": "Prepare Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Payload": {
+      "main": [
+        [
+          {
+            "node": "Notify CRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {}
+}

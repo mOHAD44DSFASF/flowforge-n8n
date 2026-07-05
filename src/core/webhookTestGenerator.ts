@@ -11,7 +11,10 @@ export interface WebhookTestInfo {
   prodUrl: string;
 }
 
-function getStringParam(parameters: Record<string, unknown> | undefined, key: string): string | undefined {
+function getStringParam(
+  parameters: Record<string, unknown> | undefined,
+  key: string
+): string | undefined {
   const value = parameters?.[key];
   return typeof value === 'string' ? value : undefined;
 }

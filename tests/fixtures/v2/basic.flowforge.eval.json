@@ -1,0 +1,25 @@
+{
+  "name": "basic eval",
+  "cases": [
+    {
+      "id": "exact-case",
+      "input": "hello",
+      "expectation": { "type": "exact", "value": "hello world" }
+    },
+    {
+      "id": "schema-case",
+      "input": { "prompt": "classify" },
+      "expectation": {
+        "type": "jsonSchema",
+        "value": {
+          "required": ["priority"],
+          "properties": { "priority": { "type": "string" } }
+        }
+      }
+    }
+  ],
+  "recordings": {
+    "exact-case": "hello world",
+    "schema-case": { "priority": "high" }
+  }
+}

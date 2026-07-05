@@ -7,10 +7,11 @@ test('valid workflow validation', () => {
   const filePath = path.join(__dirname, '../fixtures/valid-workflow.json');
   const parseResult = parseWorkflowFile(filePath);
   expect(parseResult.success).toBe(true);
-  
+
   const report = validateWorkflow(parseResult.workflow!);
   expect(report.isValid).toBe(true);
   expect(report.errors.length).toBe(0);
+  expect(report.findings.length).toBe(0);
 });
 
 test('invalid workflow validation (schema & non-existent connection)', () => {
@@ -67,11 +68,20 @@ test('connection integrity and duplicate check', () => {
 
   const report = validateWorkflow(mockWorkflow);
   expect(report.isValid).toBe(false);
-  
-  const messages = report.errors.map(e => e.message);
+
+  const messages = report.errors.map((e) => e.message);
   expect(messages).toContain('Duplicate node ID found: "1"');
   expect(messages).toContain('Duplicate node name found: "Format Data"');
-  expect(messages).toContain('Node "Webhook Trigger" connects to non-existent target node: "Missing Target Node"');
+  expect(messages).toContain(
+    'Node "Webhook Trigger" connects to non-existent target node: "Missing Target Node"'
+  );
+  expect(report.findings.map((f) => f.code)).toEqual(
+    expect.arrayContaining([
+      'SCHEMA-DUPLICATE-NODE-ID',
+      'SCHEMA-DUPLICATE-NODE-NAME',
+      'SCHEMA-MISSING-CONNECTION-TARGET'
+    ])
+  );
 });
 
 test('secrets validation triggers warnings', () => {
@@ -81,7 +91,12 @@ test('secrets validation triggers warnings', () => {
 
   const report = validateWorkflow(parseResult.workflow!);
   expect(report.warnings.length).toBeGreaterThan(0);
-  
-  const hasSecretWarning = report.warnings.some(w => w.message.includes('obvious hardcoded API key or token pattern'));
+
+  const hasSecretWarning = report.warnings.some((w) =>
+    w.message.includes('obvious hardcoded API key or token pattern')
+  );
   expect(hasSecretWarning).toBe(true);
+  expect(
+    report.findings.some((f) => f.code === 'SEC-HARDCODED-SECRET' && f.category === 'security')
+  ).toBe(true);
 });

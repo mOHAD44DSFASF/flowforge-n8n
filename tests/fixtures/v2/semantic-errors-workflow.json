@@ -1,0 +1,44 @@
+{
+  "name": "Semantic Errors Fixture",
+  "nodes": [
+    {
+      "id": "webhook-1",
+      "name": "Lead Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 99,
+      "position": [0, 0],
+      "parameters": {
+        "path": "lead",
+        "httpMethd": "POST"
+      }
+    },
+    {
+      "id": "http-1",
+      "name": "Create Lead",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [220, 0],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.example.test/leads",
+        "sendBody": true,
+        "unknownOption": true
+      }
+    }
+  ],
+  "connections": {
+    "Lead Webhook": {
+      "main": [
+        [
+          {
+            "node": "Create Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {}
+}

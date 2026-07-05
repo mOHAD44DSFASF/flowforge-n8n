@@ -6,7 +6,7 @@ This document outlines the milestones and roadmap directions for FlowForge n8n.
 
 ## Project Milestones
 
-### v0.1.0 - Initial Release (Current)
+### v0.1.0 - Initial Release
 *   [x] Standalone local TypeScript CLI execution binary `flowforge`.
 *   [x] Claude Code plugin integration supporting commands, skills SOPs, and safety hooks.
 *   [x] 20 review-ready workflow templates and custom node scaffold creator.
@@ -14,10 +14,13 @@ This document outlines the milestones and roadmap directions for FlowForge n8n.
 
 ---
 
-### v0.2.0 - Local Runner Integration
-*   [ ] Local n8n Docker test runner harness.
-*   [ ] Node compatibility analyzer checks.
-*   [ ] Stronger workflow schema definitions and validations.
+### v0.2.0 - Assurance Layer (Current)
+*   [x] Bundled catalog semantic validation.
+*   [x] Static analysis engine and fail gates.
+*   [x] Regression tests with mocks and snapshots.
+*   [x] Deterministic self-healing.
+*   [x] MCP server.
+*   [x] Semantic review, eval replay, and offline CI.
 
 ---
 

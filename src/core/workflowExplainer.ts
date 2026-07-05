@@ -20,7 +20,9 @@ export function explainWorkflow(workflow: N8nWorkflow): string {
     }
   }
 
-  const triggers = nodes.filter((n) => n.type.toLowerCase().includes('trigger') || n.type === 'n8n-nodes-base.webhook');
+  const triggers = nodes.filter(
+    (n) => n.type.toLowerCase().includes('trigger') || n.type === 'n8n-nodes-base.webhook'
+  );
   const startNodes = triggers.length > 0 ? triggers : nodes.filter((n) => !incoming.has(n.name));
 
   let explanation = `=== Workflow Explanation: "${name}" ===\n\n`;
@@ -33,7 +35,7 @@ export function explainWorkflow(workflow: N8nWorkflow): string {
     startNodes.forEach((node) => {
       let desc = 'Executes manually or as a processing step.';
       if (node.type === 'n8n-nodes-base.webhook') {
-        desc = `Exposes an HTTP endpoint listening to [${node.parameters?.httpMethod || 'POST'}] requests on path: "/${node.parameters?.path || '...'}"`;
+        desc = `Exposes an HTTP endpoint listening to [${node.parameters?.httpMethod || 'POST'}] requests on path: "/${redactSensitiveDisplayValue(node.parameters?.path || '...')}"`;
       } else if (node.type === 'n8n-nodes-base.scheduleTrigger') {
         desc = `Executes repeatedly on a schedule configuration.`;
       } else if (node.type === 'n8n-nodes-base.manualTrigger') {
@@ -45,7 +47,7 @@ export function explainWorkflow(workflow: N8nWorkflow): string {
 
   // 3. Describe processing steps & paths
   explanation += `\n## 2. Processing Steps & Logical Flow\n`;
-  const nameToNode = new Map<string, typeof nodes[0]>();
+  const nameToNode = new Map<string, (typeof nodes)[0]>();
   nodes.forEach((n) => nameToNode.set(n.name, n));
 
   const walked = new Set<string>();
@@ -87,7 +89,9 @@ export function explainWorkflow(workflow: N8nWorkflow): string {
   const integrations: string[] = [];
   nodes.forEach((n) => {
     if (n.type === 'n8n-nodes-base.httpRequest') {
-      integrations.push(`HTTP Call to: ${n.parameters?.url || 'URL expression'}`);
+      integrations.push(
+        `HTTP Call to: ${redactSensitiveDisplayValue(n.parameters?.url || 'URL expression')}`
+      );
     } else if (n.type.includes('slack')) {
       integrations.push('Slack notifications integration');
     } else if (n.type.includes('googleSheets')) {
@@ -107,4 +111,30 @@ export function explainWorkflow(workflow: N8nWorkflow): string {
   }
 
   return explanation;
+}
+
+function redactSensitiveDisplayValue(value: unknown): string {
+  if (typeof value !== 'string') return String(value);
+
+  let redacted = value
+    .replace(/sk_live_[a-zA-Z0-9]{8,}/g, '**REDACTED_SECRET**')
+    .replace(/sk_test_[a-zA-Z0-9]{8,}/g, '**REDACTED_SECRET**')
+    .replace(/xox[baprs]-[a-zA-Z0-9-]{8,}/g, '**REDACTED_SECRET**')
+    .replace(/(token|secret|password|api[_-]?key)=([^&#/]+)/gi, '$1=**REDACTED_SECRET**');
+
+  try {
+    const parsed = new URL(redacted);
+    if (parsed.username) parsed.username = '**REDACTED**';
+    if (parsed.password) parsed.password = '**REDACTED**';
+    for (const key of Array.from(parsed.searchParams.keys())) {
+      if (/token|secret|password|api[_-]?key/i.test(key)) {
+        parsed.searchParams.set(key, '**REDACTED_SECRET**');
+      }
+    }
+    redacted = parsed.toString();
+  } catch {
+    // Non-URL values such as webhook paths are handled by regex redaction above.
+  }
+
+  return redacted;
 }

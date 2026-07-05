@@ -9,15 +9,51 @@ export interface SanitizeResult {
 type MutableJsonObject = Record<string, unknown>;
 
 const secretRegexes: Array<{ name: string; pattern: RegExp; replacement: string }> = [
-  { name: 'Stripe Live Secret Key', pattern: /sk_live_[a-zA-Z0-9]{8,}/g, replacement: '**REDACTED_SECRET**' },
-  { name: 'Stripe Test Secret Key', pattern: /sk_test_[a-zA-Z0-9]{8,}/g, replacement: '**REDACTED_SECRET**' },
-  { name: 'Slack Bot Token', pattern: /xoxb-[a-zA-Z0-9-]{8,}/g, replacement: '**CREDENTIAL_PLACEHOLDER**' },
-  { name: 'Slack User Token', pattern: /xoxp-[a-zA-Z0-9-]{8,}/g, replacement: '**CREDENTIAL_PLACEHOLDER**' },
-  { name: 'GitHub Classic PAT', pattern: /ghp_[a-zA-Z0-9]{36}/g, replacement: '**REDACTED_SECRET**' },
-  { name: 'GitHub Fine-grained PAT', pattern: /github_pat_[a-zA-Z0-9_]{82}/g, replacement: '**REDACTED_SECRET**' },
-  { name: 'Authorization Bearer Token', pattern: /Bearer\s+[a-zA-Z0-9\-._~+/]+=*/gi, replacement: 'Bearer **AUTH_HEADER_REDACTED**' },
-  { name: 'Authorization Basic Token', pattern: /Basic\s+[a-zA-Z0-9\-._~+/]+=*/gi, replacement: 'Basic **AUTH_HEADER_REDACTED**' },
-  { name: 'Private Key block', pattern: /-----BEGIN PRIVATE KEY-----[\s\S]+?-----END PRIVATE KEY-----/g, replacement: '**REDACTED_PRIVATE_KEY**' }
+  {
+    name: 'Stripe Live Secret Key',
+    pattern: /sk_live_[a-zA-Z0-9]{8,}/g,
+    replacement: '**REDACTED_SECRET**'
+  },
+  {
+    name: 'Stripe Test Secret Key',
+    pattern: /sk_test_[a-zA-Z0-9]{8,}/g,
+    replacement: '**REDACTED_SECRET**'
+  },
+  {
+    name: 'Slack Bot Token',
+    pattern: /xoxb-[a-zA-Z0-9-]{8,}/g,
+    replacement: '**CREDENTIAL_PLACEHOLDER**'
+  },
+  {
+    name: 'Slack User Token',
+    pattern: /xoxp-[a-zA-Z0-9-]{8,}/g,
+    replacement: '**CREDENTIAL_PLACEHOLDER**'
+  },
+  {
+    name: 'GitHub Classic PAT',
+    pattern: /ghp_[a-zA-Z0-9]{36}/g,
+    replacement: '**REDACTED_SECRET**'
+  },
+  {
+    name: 'GitHub Fine-grained PAT',
+    pattern: /github_pat_[a-zA-Z0-9_]{82}/g,
+    replacement: '**REDACTED_SECRET**'
+  },
+  {
+    name: 'Authorization Bearer Token',
+    pattern: /Bearer\s+[a-zA-Z0-9\-._~+/]+=*/gi,
+    replacement: 'Bearer **AUTH_HEADER_REDACTED**'
+  },
+  {
+    name: 'Authorization Basic Token',
+    pattern: /Basic\s+[a-zA-Z0-9\-._~+/]+=*/gi,
+    replacement: 'Basic **AUTH_HEADER_REDACTED**'
+  },
+  {
+    name: 'Private Key block',
+    pattern: /-----BEGIN PRIVATE KEY-----[\s\S]+?-----END PRIVATE KEY-----/g,
+    replacement: '**REDACTED_PRIVATE_KEY**'
+  }
 ];
 
 const sensitiveKeys = new Set([
@@ -57,7 +93,10 @@ function redactInternalEndpoint(value: string): { value: string; matched: boolea
   return { value: updated, matched };
 }
 
-export function sanitizeWorkflow(workflow: N8nWorkflow, strictMode: boolean = false): SanitizeResult {
+export function sanitizeWorkflow(
+  workflow: N8nWorkflow,
+  strictMode: boolean = false
+): SanitizeResult {
   let redactedCount = 0;
   const auditLogs: string[] = [];
 
@@ -80,7 +119,12 @@ export function sanitizeWorkflow(workflow: N8nWorkflow, strictMode: boolean = fa
 
         // Check sensitive keys
         const isSensitiveKey = sensitiveKeys.has(key.toLowerCase());
-        if (isSensitiveKey && typeof value === 'string' && value.trim().length > 0 && !value.includes('={{')) {
+        if (
+          isSensitiveKey &&
+          typeof value === 'string' &&
+          value.trim().length > 0 &&
+          !value.includes('={{')
+        ) {
           // If value is not an expression (starts with ={{), redact it
           obj[key] = '**REDACTED_SECRET**';
           redactedCount++;
@@ -98,7 +142,9 @@ export function sanitizeWorkflow(workflow: N8nWorkflow, strictMode: boolean = fa
               scanner.pattern.lastIndex = 0;
               updatedValue = updatedValue.replace(scanner.pattern, scanner.replacement);
               matched = true;
-              auditLogs.push(`Redacted pattern match for "${scanner.name}" at path: "${nextPath}".`);
+              auditLogs.push(
+                `Redacted pattern match for "${scanner.name}" at path: "${nextPath}".`
+              );
             }
           }
 
@@ -138,7 +184,9 @@ export function sanitizeWorkflow(workflow: N8nWorkflow, strictMode: boolean = fa
         for (const credType of Object.keys(node.credentials)) {
           const cred = node.credentials[credType];
           if (isRecord(cred) && cred.id) {
-            auditLogs.push(`Stubbed credential instance ID for "${credType}" in node "${node.name}".`);
+            auditLogs.push(
+              `Stubbed credential instance ID for "${credType}" in node "${node.name}".`
+            );
             cred.id = '**CREDENTIAL_PLACEHOLDER**';
             cred.name = '**CREDENTIAL_PLACEHOLDER**';
             redactedCount++;

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { lintWorkflow } from '../../src/core/workflowLinter.js';
+import { lintWorkflow, lintWorkflowFindings } from '../../src/core/workflowLinter.js';
 import { N8nWorkflow } from '../../src/core/workflowSchema.js';
 
 test('lint rules detect naming, headers, errors and webhook warnings', () => {
@@ -33,7 +33,7 @@ test('lint rules detect naming, headers, errors and webhook warnings', () => {
       }
     ],
     connections: {
-      'Webhook': {
+      Webhook: {
         main: [
           [
             {
@@ -50,7 +50,7 @@ test('lint rules detect naming, headers, errors and webhook warnings', () => {
   const issues = lintWorkflow(mockWorkflow);
   expect(issues.length).toBeGreaterThan(0);
 
-  const ruleIds = issues.map(i => i.ruleId);
+  const ruleIds = issues.map((i) => i.ruleId);
   // Default names flagged
   expect(ruleIds).toContain('MNT-NAMING');
   // Hardcoded authorization header flagged
@@ -59,4 +59,10 @@ test('lint rules detect naming, headers, errors and webhook warnings', () => {
   expect(ruleIds).toContain('REL-ERROR-HANDLING');
   // Webhook trigger present but no Respond-to-Webhook flagged
   expect(ruleIds).toContain('REL-WEBHOOK-RESPONSE');
+
+  const findings = lintWorkflowFindings(mockWorkflow);
+  expect(findings.map((f) => f.code)).toEqual(expect.arrayContaining(ruleIds));
+  expect(findings.some((f) => f.code === 'SEC-AUTH-HEADER' && f.category === 'security')).toBe(
+    true
+  );
 });

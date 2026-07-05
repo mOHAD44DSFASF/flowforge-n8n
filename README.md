@@ -14,27 +14,27 @@
   <a href="https://code.claude.com"><img src="https://img.shields.io/badge/Claude%20Code-Plugin-purple.svg?style=flat-square" alt="Claude Code Plugin"></a>
 </p>
 
-**FlowForge n8n** is a local-first command-line interface (CLI) and Claude Code plugin for creating, validating, linting, sanitizing, documenting, scoring, diagramming, testing, and scaffolding n8n workflow JSON.
+**FlowForge n8n** is a local-first assurance layer for n8n workflow JSON: deterministic validation against bundled node metadata, static security/reliability/cost analysis, regression testing, snapshots, self-healing, semantic review, offline CI, and MCP tools.
 
 ---
 
 ## 🚀 The Flow
 ```text
-Prompt → workflow scaffold → validate → sanitize → payloads → test scripts → diagram → docs
+Generate in n8n or n8n-mcp → validate → analyze → test → heal → review → offline CI
 ```
 
 ---
 
 ## 🔍 What is FlowForge n8n?
 
-FlowForge n8n helps automation engineers and Claude Code users create review-ready n8n workflow scaffolds, validate workflow JSON structure, remove credentials secrets, generate test payloads, generate webhook test scripts, render connection diagrams, compile descriptions documentation, score workflow quality metrics, and scaffold custom n8n community nodes.
+FlowForge n8n helps automation engineers and Claude Code users turn existing n8n workflows into review-ready, CI-ready artifacts. It does not compete with n8n-mcp on exhaustive node search or generation; use n8n-mcp to build workflows and FlowForge to prove they are structurally valid, semantically plausible, tested, sanitized, and safe to review.
 
 ---
 
 ## 🛑 What it is NOT
 *   **Not a replacement for n8n:** FlowForge does not run or host n8n integrations. You edit and run workflows inside your active n8n instance.
 *   **Not guaranteed production automation:** Generated workflows represent review-ready scaffolds. You must test and configure integrations before running them in production.
-*   **Not a real n8n runtime runner:** In `v0.1.0`, FlowForge reviews structures and parses schemas offline. It does not invoke live third-party APIs.
+*   **Not a complete n8n runtime clone:** FlowForge simulates deterministic core nodes for regression tests and requires mocks for unsupported nodes.
 *   **Not a hosted SaaS:** FlowForge operates entirely locally on your machine.
 *   **Not an API key collector:** FlowForge does not request, log, or transmit your credentials.
 
@@ -46,10 +46,14 @@ FlowForge n8n helps automation engineers and Claude Code users create review-rea
 | :--- | :--- |
 | **Workflow Scaffold Generator** | Creates connection blocks and JSON schemas from prompt parameters. |
 | **Template Generator** | Installs 20 preconfigured automation workflow directories. |
-| **Validator** | Asserts Zod schema compliance, catches duplicates, and checks connection tracks. |
-| **Linter** | Audits retry configuration checks and naming guidelines. |
+| **Validator** | Asserts Zod schema compliance, catches duplicates, checks connection tracks, and runs bundled catalog semantic checks. |
+| **Linter / Analyzer** | Audits retry configuration, naming, security, reliability, and cost risks with fail gates. |
 | **Sanitizer** | Recursively scrubs GitHub, Stripe, and Slack keys. |
 | **Payload Generator** | Generates mock payloads (valid, invalid, boundary cases) for simulation. |
+| **Regression Test Runner** | Runs deterministic `*.flowforge.test.json` workflow simulations with mocks and snapshots. |
+| **Self-Healing Loop** | Applies deterministic safe fixes from validation and analysis findings with an audit report. |
+| **MCP Server** | Exposes validation, analysis, tests, diff, heal, sanitize, and payload tools over MCP. |
+| **Git Review / CI / Eval** | Produces semantic review reports, deterministic AI evals, and offline CI results. |
 | **Webhook Test Generator** | Compiles curl execution scripts (`test-webhook.sh`) for active webhook triggers. |
 | **Mermaid Diagram Generator** | Translates workflow JSON layout files to Mermaid diagrams. |
 | **Docs Generator** | Documents node specifications and credentials requirements. |
@@ -76,26 +80,26 @@ pnpm flowforge --help
 # 2. Generate review-ready workflow scaffold
 pnpm flowforge new "Receive a lead from a webhook, validate it, call a CRM API, notify Slack, and respond with JSON" --out examples/generated/lead
 
-# 3. Validate JSON structure and connections
+# 3. Validate JSON structure, connections, and bundled catalog semantics
 pnpm flowforge validate examples/generated/lead/lead.json
 
-# 4. Redact private credentials
+# 4. Analyze security, reliability, and cost risks
+pnpm flowforge analyze examples/generated/lead/lead.json --json
+
+# 5. Run deterministic regression tests
+pnpm flowforge test "examples/generated/lead/*.flowforge.test.json" --reporter json
+
+# 6. Apply deterministic safe fixes
+pnpm flowforge heal examples/generated/lead/lead.json --dry-run
+
+# 7. Review a workflow revision
+pnpm flowforge review old.json new.json --out flowforge-review.md
+
+# 8. Run offline CI
+FLOWFORGE_OFFLINE=1 pnpm flowforge ci .
+
+# 9. Redact private credentials before sharing
 pnpm flowforge sanitize examples/generated/lead/lead.json
-
-# 5. Generate mock simulation datasets
-pnpm flowforge payload lead-form --out examples/generated/lead/payloads
-
-# 6. Build webhook curl trigger script
-pnpm flowforge test-webhook examples/generated/lead/lead.json --out examples/generated/lead
-
-# 7. Render flowchart diagram
-pnpm flowforge diagram examples/generated/lead/lead.json --out examples/generated/lead
-
-# 8. Compile documentation markdown
-pnpm flowforge docs examples/generated/lead/lead.json --out examples/generated/lead/docs
-
-# 9. Audit quality scorecard metrics
-pnpm flowforge score examples/generated/lead/lead.json
 ```
 
 ---
@@ -154,10 +158,17 @@ After publishing your repository to GitHub, you can add it to your Claude Code m
 | Command | Purpose | Example |
 | :--- | :--- | :--- |
 | `new` | Scaffold workflow JSON from keywords or template copy. | `flowforge new --template lead-to-crm` |
-| `validate` | Check schema format, duplicate names, and connection tracks. | `flowforge validate workflows/lead.json` |
-| `lint` | Audit retry settings, orphan nodes, and naming. | `flowforge lint workflows/lead.json` |
+| `validate` | Check schema format, duplicate names, connection tracks, and bundled node catalog semantics. | `flowforge validate workflows/lead.json --json` |
+| `lint` | Audit retry settings, orphan nodes, naming, and static analysis findings. | `flowforge lint workflows/lead.json --fail-on warning` |
+| `analyze` | Deep static analysis for security, reliability, cost, and maintainability. | `flowforge analyze workflows/lead.json --json` |
+| `heal` | Apply deterministic fixes and emit `heal-report.json`. | `flowforge heal workflows/lead.json --max-iterations 5` |
+| `mcp` | Start the MCP server over stdio or Streamable HTTP. | `flowforge mcp` |
+| `review` | Review semantic changes and introduced findings. | `flowforge review old.json new.json --out review.md` |
+| `eval` | Replay deterministic AI-agent eval recordings. | `flowforge eval "*.flowforge.eval.json" --reporter json` |
+| `ci` | Run offline CI with JSON and JUnit reports. | `FLOWFORGE_OFFLINE=1 flowforge ci .` |
 | `sanitize` | Redact Slack/Stripe keys and Authorization headers. | `flowforge sanitize workflows/lead.json` |
 | `payload` | Output 6 simulation payload variants. | `flowforge payload lead-form` |
+| `test` | Run deterministic workflow regression tests. | `flowforge test "tests/**/*.flowforge.test.json" --reporter json` |
 | `test-webhook` | Generate mock webhook execution scripts. | `flowforge test-webhook workflows/lead.json` |
 | `diagram` | Render layout graph as Mermaid flowchart files. | `flowforge diagram workflows/lead.json` |
 | `docs` | Compile specs and credentials checklist. | `flowforge docs workflows/lead.json` |
@@ -207,14 +218,14 @@ FlowForge ships with 20 preconfigured templates. Run `flowforge new --template <
 ---
 
 ## ⚠️ Limitations
-*   `v0.1.0` operates entirely offline and does not spin up a live n8n server runtime.
+*   `v0.2.0` operates offline by default and does not spin up a live n8n server runtime.
 *   Workflows created are review-ready scaffolds; API connection authentication must be configured inside your n8n editor UI.
 *   `node-new` scaffolds custom TS and package files. You must implement downstream API fetch calls yourself.
 
 ---
 
 ## 🗺️ Roadmap
-*   **v0.2.0:** Local Docker test runner integration, compatibility checks, and stronger schema validations.
+*   **v0.2.0:** Assurance layer: semantic validation, static analysis, regression tests, self-healing, MCP, review, eval, and offline CI.
 *   **v0.3.0:** OpenAPI imports, curl-to-workflow compilers, expression fixers, and log debugger.
 *   **v1.0.0:** Stable execution compatibility checks and automated custom node code builders.
 

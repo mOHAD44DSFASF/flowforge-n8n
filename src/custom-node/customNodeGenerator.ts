@@ -50,7 +50,8 @@ function toDisplayName(value: string): string {
 }
 
 function normalizeOptions(options: CustomNodeOptions): NormalizedOptions {
-  const auth = options.auth === 'oauth2' ? 'oauth2' : options.auth === 'apiKey' ? 'apiKey' : undefined;
+  const auth =
+    options.auth === 'oauth2' ? 'oauth2' : options.auth === 'apiKey' ? 'apiKey' : undefined;
   if (!auth) {
     throw new Error('Unsupported auth type. Use "apiKey" or "oauth2".');
   }
@@ -60,10 +61,7 @@ function normalizeOptions(options: CustomNodeOptions): NormalizedOptions {
     throw new Error('Resource name must contain at least one letter or number.');
   }
 
-  const operations = options.operation
-    .split(',')
-    .map(toOptionValue)
-    .filter(Boolean);
+  const operations = options.operation.split(',').map(toOptionValue).filter(Boolean);
 
   const uniqueOperations = Array.from(new Set(operations));
   if (uniqueOperations.length === 0) {
@@ -145,7 +143,11 @@ export class ${className}Api implements ICredentialType {
 `;
 }
 
-export function generateCustomNode(name: string, options: CustomNodeOptions, targetParentDir: string): string[] {
+export function generateCustomNode(
+  name: string,
+  options: CustomNodeOptions,
+  targetParentDir: string
+): string[] {
   const packageSuffix = toPackageSegment(name);
   const className = toPascalCase(name);
   const nodeTypeName = toCamelCase(name);
@@ -154,9 +156,11 @@ export function generateCustomNode(name: string, options: CustomNodeOptions, tar
   }
 
   const normalized = normalizeOptions(options);
-  const credentialClassName = normalized.auth === 'oauth2' ? `${className}OAuth2Api` : `${className}Api`;
+  const credentialClassName =
+    normalized.auth === 'oauth2' ? `${className}OAuth2Api` : `${className}Api`;
   const credentialFileName = `${credentialClassName}.credentials.ts`;
-  const credentialReferenceName = normalized.auth === 'oauth2' ? `${nodeTypeName}OAuth2Api` : `${nodeTypeName}Api`;
+  const credentialReferenceName =
+    normalized.auth === 'oauth2' ? `${nodeTypeName}OAuth2Api` : `${nodeTypeName}Api`;
 
   const nodeDir = path.join(targetParentDir, `n8n-nodes-${packageSuffix}`);
   const credsDir = path.join(nodeDir, 'credentials');
@@ -230,7 +234,11 @@ export function generateCustomNode(name: string, options: CustomNodeOptions, tar
     generatedFiles
   );
 
-  writeFile(path.join(credsDir, credentialFileName), credentialClass(className, credentialReferenceName, normalized.auth), generatedFiles);
+  writeFile(
+    path.join(credsDir, credentialFileName),
+    credentialClass(className, credentialReferenceName, normalized.auth),
+    generatedFiles
+  );
 
   writeFile(
     path.join(specificNodeDir, `${className}.node.ts`),
