@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://flowforge-n8n.local/schemas/flowforge.heal-report.schema.json",
+  "title": "FlowForge heal report",
+  "type": "object",
+  "required": ["sourceFile", "writeMode", "maxIterations", "iterations", "finalFindings", "changed", "converged"],
+  "additionalProperties": false,
+  "properties": {
+    "sourceFile": { "type": "string" },
+    "outputFile": { "type": "string" },
+    "writeMode": { "enum": ["copy", "in-place", "dry-run"] },
+    "maxIterations": { "type": "integer", "minimum": 0 },
+    "iterations": { "type": "array", "items": { "type": "object" } },
+    "finalFindings": { "type": "array", "items": { "type": "object" } },
+    "finalTestSummary": { "type": "object" },
+    "changed": { "type": "boolean" },
+    "converged": { "type": "boolean" }
+  }
+}

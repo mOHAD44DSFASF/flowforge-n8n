@@ -2,7 +2,7 @@ import { N8nWorkflow } from './workflowSchema.js';
 
 export interface ScoreBreakdown {
   reliability: number; // Max 25
-  security: number;    // Max 25
+  security: number; // Max 25
   testability: number; // Max 20
   maintainability: number; // Max 20
   documentation: number; // Max 10
@@ -34,12 +34,18 @@ function hasAuthorizationHeader(parameters: Record<string, unknown> | undefined)
   });
 }
 
-function getBooleanParam(parameters: Record<string, unknown> | undefined, key: string): boolean | undefined {
+function getBooleanParam(
+  parameters: Record<string, unknown> | undefined,
+  key: string
+): boolean | undefined {
   const value = parameters?.[key];
   return typeof value === 'boolean' ? value : undefined;
 }
 
-function getStringParam(parameters: Record<string, unknown> | undefined, key: string): string | undefined {
+function getStringParam(
+  parameters: Record<string, unknown> | undefined,
+  key: string
+): string | undefined {
   const value = parameters?.[key];
   return typeof value === 'string' ? value : undefined;
 }
@@ -133,7 +139,9 @@ export function scoreWorkflow(workflow: N8nWorkflow): ScoreReport {
     if (n.type === 'n8n-nodes-base.httpRequest') {
       if (hasAuthorizationHeader(n.parameters)) {
         security -= 10;
-        recommendations.push(`Rely on credentials profiles instead of hardcoded Authorization header in: "${n.name}".`);
+        recommendations.push(
+          `Rely on credentials profiles instead of hardcoded Authorization header in: "${n.name}".`
+        );
       }
     }
   });
@@ -146,13 +154,15 @@ export function scoreWorkflow(workflow: N8nWorkflow): ScoreReport {
 
   // 3. Testability (Max 20)
   // Having triggers that ease testing increases score
-  const triggers = nodes.filter((n) => n.type.toLowerCase().includes('trigger') || n.type === 'n8n-nodes-base.webhook');
+  const triggers = nodes.filter(
+    (n) => n.type.toLowerCase().includes('trigger') || n.type === 'n8n-nodes-base.webhook'
+  );
   const hasManualTrigger = nodes.some((n) => n.type === 'n8n-nodes-base.manualTrigger');
-  
+
   if (triggers.length === 0) {
     testability -= 10;
     recommendations.push('Add a trigger node (Webhook, Manual Trigger) to make testing simple.');
-  } else if (!hasManualTrigger && triggers.some(t => t.type !== 'n8n-nodes-base.manualTrigger')) {
+  } else if (!hasManualTrigger && triggers.some((t) => t.type !== 'n8n-nodes-base.manualTrigger')) {
     // If has webhook/cron triggers, but no manual test shortcut, deduct slightly
     testability -= 5;
     recommendations.push('Add a manual trigger input block to run simulations during editing.');
@@ -161,11 +171,25 @@ export function scoreWorkflow(workflow: N8nWorkflow): ScoreReport {
   testability = Math.max(0, testability);
 
   // 4. Maintainability (Max 20)
-  const defaultNames = ['Set', 'Code', 'IF', 'HTTP Request', 'Webhook', 'Slack', 'Google Sheets', 'Airtable', 'Gmail', 'NoOp', 'Switch'];
+  const defaultNames = [
+    'Set',
+    'Code',
+    'IF',
+    'HTTP Request',
+    'Webhook',
+    'Slack',
+    'Google Sheets',
+    'Airtable',
+    'Gmail',
+    'NoOp',
+    'Switch'
+  ];
   let hasDefaultName = false;
   nodes.forEach((n) => {
     const matchDefault = defaultNames.some(
-      (def) => n.name.toLowerCase() === def.toLowerCase() || n.name.match(new RegExp(`^${def}\\s*\\d*$`, 'i'))
+      (def) =>
+        n.name.toLowerCase() === def.toLowerCase() ||
+        n.name.match(new RegExp(`^${def}\\s*\\d*$`, 'i'))
     );
     if (matchDefault) {
       hasDefaultName = true;
@@ -192,14 +216,16 @@ export function scoreWorkflow(workflow: N8nWorkflow): ScoreReport {
   if (!hasSticky) {
     documentation -= 5;
   }
-  
+
   const hasNotice = nodes.some((n) => n.parameters?.notes || n.parameters?.notice);
   if (!hasNotice) {
     documentation -= 5;
   }
 
   if (documentation < 10) {
-    recommendations.push('Add annotations (sticky notes or node parameter notices) to explain logic.');
+    recommendations.push(
+      'Add annotations (sticky notes or node parameter notices) to explain logic.'
+    );
   }
 
   documentation = Math.max(0, documentation);

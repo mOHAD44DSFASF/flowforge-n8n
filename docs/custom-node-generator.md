@@ -22,7 +22,7 @@ custom-nodes/n8n-nodes-stripecharge/
 
 ---
 
-## 2. File Roles & TODOs
+## 2. File Roles & Follow-Up Work
 
 ### 2.1 `package.json`
 Specifies package names (`n8n-nodes-stripecharge`) and details node paths:
@@ -35,9 +35,9 @@ Declares the properties displayed to users when setting up authentication. Under
 ### 2.3 `StripeCharge.node.ts`
 Contains node logic, input parameters, operations dropdown, and request execution rules:
 *   `properties`: Fields, resource selectors, and actions list.
-*   `execute`: The runtime loop parsing incoming inputs, reading parameters, and triggering remote API calls. Find `TODO` comments inside to insert helper request handlers:
+*   `execute`: The runtime loop parsing incoming inputs, reading parameters, and triggering remote API calls. Replace the scaffolded response with service-specific request handlers:
     ```typescript
-    // TODO: Execute HTTP request helper calling downstream APIs
+    // Execute HTTP request helper calling downstream APIs
     // const response = await this.helpers.requestWithAuthentication.call(...)
     ```
 

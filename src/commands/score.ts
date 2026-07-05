@@ -6,7 +6,9 @@ export function executeScore(filePath: string, options: { json?: boolean }) {
 
   if (!parseResult.success) {
     if (options.json) {
-      console.log(JSON.stringify({ isValid: false, errors: [{ message: parseResult.error }] }, null, 2));
+      console.log(
+        JSON.stringify({ isValid: false, errors: [{ message: parseResult.error }] }, null, 2)
+      );
     } else {
       console.error(`\x1b[31m[ERROR] Error parsing workflow file:\x1b[0m ${parseResult.error}`);
     }

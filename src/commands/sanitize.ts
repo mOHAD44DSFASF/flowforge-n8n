@@ -11,7 +11,10 @@ export function executeSanitize(filePath: string, options: { strict?: boolean; o
     process.exit(1);
   }
 
-  const { sanitizedWorkflow, redactedCount, reportMd } = sanitizeWorkflow(parseResult.workflow!, !!options.strict);
+  const { sanitizedWorkflow, redactedCount, reportMd } = sanitizeWorkflow(
+    parseResult.workflow!,
+    !!options.strict
+  );
 
   let outPath = options.out;
   if (!outPath) {

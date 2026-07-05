@@ -30,7 +30,7 @@ test('sanitize workflow redacts keys and produces report', () => {
   // Test Standard Sanitize
   const standardResult = sanitizeWorkflow(mockWorkflow, false);
   expect(standardResult.redactedCount).toBeGreaterThan(0);
-  
+
   const parameters = standardResult.sanitizedWorkflow.nodes[0].parameters;
   expect(parameters.stripeSecret).toBe('**REDACTED_SECRET**');
   expect(parameters.slackToken).toBe('**CREDENTIAL_PLACEHOLDER**');

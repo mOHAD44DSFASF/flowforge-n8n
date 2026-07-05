@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "flowforge-n8n": {
+      "command": "flowforge",
+      "args": ["mcp"]
+    }
+  }
+}

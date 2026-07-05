@@ -1,0 +1,572 @@
+{
+  "sourceN8nVersion": "1.100.0",
+  "generatedAt": "2026-07-05T00:00:00.000Z",
+  "nodes": [
+    {
+      "type": "n8n-nodes-base.manualTrigger",
+      "displayName": "Manual Trigger",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "displayName": "Schedule Trigger",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "rule", "type": "collection", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.webhook",
+      "displayName": "Webhook",
+      "versions": [1, 2],
+      "latestVersion": 2,
+      "parameters": [
+        { "name": "path", "type": "string", "required": true },
+        { "name": "httpMethod", "type": "options", "required": true, "default": "GET" },
+        { "name": "responseMode", "type": "options", "required": false },
+        { "name": "responseData", "type": "options", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.respondToWebhook",
+      "displayName": "Respond to Webhook",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "respondWith", "type": "options", "required": false, "default": "json" },
+        { "name": "responseBody", "type": "json", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.httpRequest",
+      "displayName": "HTTP Request",
+      "versions": [1, 2, 3, 4],
+      "latestVersion": 4,
+      "parameters": [
+        { "name": "url", "type": "string", "required": true },
+        { "name": "method", "type": "options", "required": false, "default": "GET" },
+        { "name": "authentication", "type": "options", "required": false },
+        { "name": "sendBody", "type": "boolean", "required": false },
+        { "name": "bodyParameters", "type": "collection", "required": false },
+        { "name": "headers", "type": "collection", "required": false },
+        { "name": "options", "type": "collection", "required": false },
+        { "name": "retryOnFail", "type": "boolean", "required": false },
+        { "name": "onError", "type": "options", "required": false },
+        { "name": "ignoreResponseCode", "type": "boolean", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.set",
+      "displayName": "Set",
+      "versions": [1, 2, 3],
+      "latestVersion": 3,
+      "parameters": [
+        { "name": "keepOnlySet", "type": "boolean", "required": false },
+        { "name": "values", "type": "collection", "required": false },
+        { "name": "assignments", "type": "collection", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.if",
+      "displayName": "If",
+      "versions": [1, 2],
+      "latestVersion": 2,
+      "parameters": [
+        { "name": "conditions", "type": "collection", "required": true }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.switch",
+      "displayName": "Switch",
+      "versions": [1, 2, 3],
+      "latestVersion": 3,
+      "parameters": [
+        { "name": "rules", "type": "collection", "required": true },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.code",
+      "displayName": "Code",
+      "versions": [1, 2],
+      "latestVersion": 2,
+      "parameters": [
+        { "name": "jsCode", "type": "string", "required": true },
+        { "name": "mode", "type": "options", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.merge",
+      "displayName": "Merge",
+      "versions": [1, 2, 3],
+      "latestVersion": 3,
+      "parameters": [
+        { "name": "mode", "type": "options", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.splitInBatches",
+      "displayName": "Split In Batches",
+      "versions": [1, 2, 3],
+      "latestVersion": 3,
+      "parameters": [
+        { "name": "batchSize", "type": "number", "required": false, "default": 10 },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.noOp",
+      "displayName": "No Operation",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.stickyNote",
+      "displayName": "Sticky Note",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "content", "type": "string", "required": false },
+        { "name": "height", "type": "number", "required": false },
+        { "name": "width", "type": "number", "required": false },
+        { "name": "color", "type": "number", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.slack",
+      "displayName": "Slack",
+      "versions": [1, 2],
+      "latestVersion": 2,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": true },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "channel", "type": "string", "required": false },
+        { "name": "text", "type": "string", "required": false }
+      ],
+      "credentials": [
+        { "name": "slackOAuth2Api", "required": true }
+      ]
+    },
+    {
+      "type": "n8n-nodes-base.googleSheets",
+      "displayName": "Google Sheets",
+      "versions": [1, 2, 3, 4],
+      "latestVersion": 4,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": true },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "documentId", "type": "string", "required": false },
+        { "name": "sheetName", "type": "string", "required": false },
+        { "name": "range", "type": "string", "required": false },
+        { "name": "columns", "type": "collection", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "googleSheetsOAuth2Api", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.airtable",
+      "displayName": "Airtable",
+      "versions": [1, 2],
+      "latestVersion": 2,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": true },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "base", "type": "string", "required": false },
+        { "name": "table", "type": "string", "required": false },
+        { "name": "fields", "type": "collection", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "airtableApi", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.gmail",
+      "displayName": "Gmail",
+      "versions": [1, 2],
+      "latestVersion": 2,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": true },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "sendTo", "type": "string", "required": false },
+        { "name": "subject", "type": "string", "required": false },
+        { "name": "message", "type": "string", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "gmailOAuth2", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.emailSend",
+      "displayName": "Send Email",
+      "versions": [1, 2],
+      "latestVersion": 2,
+      "parameters": [
+        { "name": "fromEmail", "type": "string", "required": false },
+        { "name": "toEmail", "type": "string", "required": true },
+        { "name": "subject", "type": "string", "required": false },
+        { "name": "text", "type": "string", "required": false },
+        { "name": "html", "type": "string", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "smtp", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.postgres",
+      "displayName": "Postgres",
+      "versions": [1, 2],
+      "latestVersion": 2,
+      "parameters": [
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "schema", "type": "string", "required": false },
+        { "name": "table", "type": "string", "required": false },
+        { "name": "query", "type": "string", "required": false },
+        { "name": "columns", "type": "collection", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "postgres", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.mySql",
+      "displayName": "MySQL",
+      "versions": [1, 2],
+      "latestVersion": 2,
+      "parameters": [
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "database", "type": "string", "required": false },
+        { "name": "table", "type": "string", "required": false },
+        { "name": "query", "type": "string", "required": false },
+        { "name": "columns", "type": "collection", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "mySql", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.telegram",
+      "displayName": "Telegram",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": false },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "chatId", "type": "string", "required": false },
+        { "name": "text", "type": "string", "required": false },
+        { "name": "additionalFields", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "telegramApi", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.discord",
+      "displayName": "Discord",
+      "versions": [1, 2],
+      "latestVersion": 2,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": true },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "channelId", "type": "string", "required": false },
+        { "name": "text", "type": "string", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "discordBotApi", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.stripe",
+      "displayName": "Stripe",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": true },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "amount", "type": "number", "required": false },
+        { "name": "currency", "type": "string", "required": false },
+        { "name": "additionalFields", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "stripeApi", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.shopify",
+      "displayName": "Shopify",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": true },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "shop", "type": "string", "required": false },
+        { "name": "additionalFields", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "shopifyApi", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.hubspot",
+      "displayName": "HubSpot",
+      "versions": [1, 2],
+      "latestVersion": 2,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": true },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "properties", "type": "collection", "required": false },
+        { "name": "additionalFields", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "hubspotApi", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.salesforce",
+      "displayName": "Salesforce",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": true },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "customFieldsUi", "type": "collection", "required": false },
+        { "name": "additionalFields", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "salesforceOAuth2Api", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.notion",
+      "displayName": "Notion",
+      "versions": [1, 2],
+      "latestVersion": 2,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": true },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "databaseId", "type": "string", "required": false },
+        { "name": "propertiesUi", "type": "collection", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "notionApi", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.jira",
+      "displayName": "Jira",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": true },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "project", "type": "string", "required": false },
+        { "name": "summary", "type": "string", "required": false },
+        { "name": "additionalFields", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "jiraSoftwareCloudApi", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.trello",
+      "displayName": "Trello",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": true },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "boardId", "type": "string", "required": false },
+        { "name": "listId", "type": "string", "required": false },
+        { "name": "additionalFields", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "trelloApi", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.asana",
+      "displayName": "Asana",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": true },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "workspace", "type": "string", "required": false },
+        { "name": "project", "type": "string", "required": false },
+        { "name": "additionalFields", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "asanaApi", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.microsoftTeams",
+      "displayName": "Microsoft Teams",
+      "versions": [1, 2],
+      "latestVersion": 2,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": true },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "teamId", "type": "string", "required": false },
+        { "name": "channelId", "type": "string", "required": false },
+        { "name": "message", "type": "string", "required": false }
+      ],
+      "credentials": [{ "name": "microsoftTeamsOAuth2Api", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.googleDrive",
+      "displayName": "Google Drive",
+      "versions": [1, 2, 3],
+      "latestVersion": 3,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": true },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "fileId", "type": "string", "required": false },
+        { "name": "folderId", "type": "string", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "googleDriveOAuth2Api", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.googleCalendar",
+      "displayName": "Google Calendar",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "resource", "type": "options", "required": true },
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "calendar", "type": "string", "required": false },
+        { "name": "start", "type": "dateTime", "required": false },
+        { "name": "end", "type": "dateTime", "required": false },
+        { "name": "additionalFields", "type": "collection", "required": false }
+      ],
+      "credentials": [{ "name": "googleCalendarOAuth2Api", "required": true }]
+    },
+    {
+      "type": "n8n-nodes-base.rssFeedRead",
+      "displayName": "RSS Feed Read",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "url", "type": "string", "required": true },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.filter",
+      "displayName": "Filter",
+      "versions": [1, 2],
+      "latestVersion": 2,
+      "parameters": [
+        { "name": "conditions", "type": "collection", "required": true },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.itemLists",
+      "displayName": "Item Lists",
+      "versions": [1, 2, 3],
+      "latestVersion": 3,
+      "parameters": [
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "fieldToSplitOut", "type": "string", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.dateTime",
+      "displayName": "Date & Time",
+      "versions": [1, 2],
+      "latestVersion": 2,
+      "parameters": [
+        { "name": "action", "type": "options", "required": true },
+        { "name": "value", "type": "string", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.crypto",
+      "displayName": "Crypto",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "action", "type": "options", "required": true },
+        { "name": "type", "type": "options", "required": false },
+        { "name": "value", "type": "string", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.html",
+      "displayName": "HTML",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "operation", "type": "options", "required": true },
+        { "name": "dataPropertyName", "type": "string", "required": false },
+        { "name": "extractionValues", "type": "collection", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.xml",
+      "displayName": "XML",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "mode", "type": "options", "required": true },
+        { "name": "dataPropertyName", "type": "string", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.readBinaryFile",
+      "displayName": "Read Binary File",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "filePath", "type": "string", "required": true },
+        { "name": "dataPropertyName", "type": "string", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.writeBinaryFile",
+      "displayName": "Write Binary File",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "fileName", "type": "string", "required": true },
+        { "name": "dataPropertyName", "type": "string", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "n8n-nodes-base.moveBinaryData",
+      "displayName": "Move Binary Data",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "mode", "type": "options", "required": true },
+        { "name": "setAllData", "type": "boolean", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": []
+    },
+    {
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "displayName": "AI Agent",
+      "versions": [1],
+      "latestVersion": 1,
+      "parameters": [
+        { "name": "prompt", "type": "string", "required": false },
+        { "name": "text", "type": "string", "required": false },
+        { "name": "options", "type": "collection", "required": false }
+      ],
+      "credentials": []
+    }
+  ]
+}

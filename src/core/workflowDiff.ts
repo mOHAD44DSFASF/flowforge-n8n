@@ -51,7 +51,7 @@ export function diffWorkflows(oldWorkflow: N8nWorkflow, newWorkflow: N8nWorkflow
       if (oldParamsStr !== newParamsStr) {
         const oldKeys = Object.keys(oldNode.parameters || {});
         const newKeys = Object.keys(node.parameters || {});
-        
+
         newKeys.forEach((k) => {
           if (!(k in oldNode.parameters)) {
             changes.push(`Parameter "${k}" added`);

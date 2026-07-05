@@ -1,0 +1,43 @@
+{
+  "workflow": {
+    "name": "Regression Mock",
+    "nodes": [
+      {
+        "id": "1",
+        "name": "Manual",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [0, 0],
+        "parameters": {}
+      },
+      {
+        "id": "2",
+        "name": "Call CRM",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 3,
+        "position": [200, 0],
+        "parameters": { "url": "https://api.example.test" }
+      }
+    ],
+    "connections": {
+      "Manual": {
+        "main": [[{ "node": "Call CRM", "type": "main", "index": 0 }]]
+      }
+    },
+    "active": false,
+    "settings": {}
+  },
+  "cases": [
+    {
+      "name": "uses http mock",
+      "trigger": { "payload": { "id": "lead_1" } },
+      "mocks": {
+        "Call CRM": { "output": { "ok": true } }
+      },
+      "expect": {
+        "output": { "ok": true },
+        "nodesExecuted": ["Manual", "Call CRM"]
+      }
+    }
+  ]
+}

@@ -12,7 +12,11 @@ export function executeTestWebhook(filePath: string, options: { url?: string; pa
   }
 
   const baseUrl = options.url || 'http://localhost:5678';
-  const { tests, shScriptContent, readmeContent } = generateWebhookTest(parseResult.workflow!, baseUrl, options.payload);
+  const { tests, shScriptContent, readmeContent } = generateWebhookTest(
+    parseResult.workflow!,
+    baseUrl,
+    options.payload
+  );
 
   if (tests.length === 0) {
     console.log(`\nNo Webhook trigger nodes identified in: ${filePath}`);
@@ -29,7 +33,9 @@ export function executeTestWebhook(filePath: string, options: { url?: string; pa
 
     console.log(`\n\x1b[32m[OK] Webhook test scripts generated.\x1b[0m`);
     console.log(`Exposed ${tests.length} webhook trigger(s):`);
-    tests.forEach((t) => console.log(`  - Node: "${t.nodeName}" [${t.method}] on /webhook-test/${t.path}`));
+    tests.forEach((t) =>
+      console.log(`  - Node: "${t.nodeName}" [${t.method}] on /webhook-test/${t.path}`)
+    );
     console.log(`\nSaved trigger shell script to: ${shScriptPath}`);
     console.log(`Saved instructions documentation to: ${readmePath}\n`);
   } catch (err: unknown) {

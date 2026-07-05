@@ -9,11 +9,15 @@ test('custom node scaffolding creates standard n8n package layouts', () => {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 
-  const generated = generateCustomNode('MyService', {
-    auth: 'apiKey',
-    resource: 'leads',
-    operation: 'create,list,get'
-  }, tmpDir);
+  const generated = generateCustomNode(
+    'MyService',
+    {
+      auth: 'apiKey',
+      resource: 'leads',
+      operation: 'create,list,get'
+    },
+    tmpDir
+  );
 
   expect(generated.length).toBe(7);
 
@@ -33,7 +37,10 @@ test('custom node scaffolding creates standard n8n package layouts', () => {
   expect(pkg.n8n.nodes).toContain('dist/nodes/MyService/MyService.node.js');
 
   // Validate Credentials content
-  const credsTs = fs.readFileSync(path.join(folder, 'credentials/MyServiceApi.credentials.ts'), 'utf-8');
+  const credsTs = fs.readFileSync(
+    path.join(folder, 'credentials/MyServiceApi.credentials.ts'),
+    'utf-8'
+  );
   expect(credsTs).toContain("name = 'myServiceApi'");
 
   // Validate Node class content

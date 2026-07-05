@@ -1,4 +1,8 @@
-import { getTemplateNames, writeTemplateToDir, scaffoldFromDescription } from '../core/templates.js';
+import {
+  getTemplateNames,
+  writeTemplateToDir,
+  scaffoldFromDescription
+} from '../core/templates.js';
 import { generateDocs } from '../core/docsGenerator.js';
 import { generateMermaidDiagram } from '../core/diagramGenerator.js';
 import { generateWebhookTest } from '../core/webhookTestGenerator.js';
@@ -10,7 +14,10 @@ function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
-export function executeNew(description: string | undefined, options: { template?: string; out?: string }) {
+export function executeNew(
+  description: string | undefined,
+  options: { template?: string; out?: string }
+) {
   if (options.template) {
     const templateName = options.template.toLowerCase().trim();
     const names = getTemplateNames();
@@ -71,7 +78,11 @@ export function executeNew(description: string | undefined, options: { template?
       if (webhookNodes.length > 0) {
         const shScriptPath = outPath.replace(/\.json$/, '-test.sh');
         const validPayloadPath = path.join(payloadDir, 'valid.json');
-        const { shScriptContent } = generateWebhookTest(workflow, 'http://localhost:5678', validPayloadPath);
+        const { shScriptContent } = generateWebhookTest(
+          workflow,
+          'http://localhost:5678',
+          validPayloadPath
+        );
         fs.writeFileSync(shScriptPath, shScriptContent, { encoding: 'utf-8', mode: 0o755 });
         console.log(`Saved test webhook shell script to: ${shScriptPath}`);
       }
